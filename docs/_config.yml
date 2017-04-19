@@ -1,7 +1,11 @@
 ###########
 # site.title
 
+<<<<<<< HEAD
 title:    'PROJECT'
+=======
+title:    'Minecraft-AI-Enemy-Dodging'
+>>>>>>> b1fba371ee5161d6e88783051d489e72d377e9c8
 subtitle: 'CS 175: Project in AI (in Minecraft)'
 
 
