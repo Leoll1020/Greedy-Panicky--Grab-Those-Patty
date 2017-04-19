@@ -7,10 +7,10 @@ title:  Team
 
 
 ## USER 1
-***UCI Net ID***: ucinetid
+***Chen Lu***: clu10
 
 ## USER 2
-***UCI Net ID***: ucinetid
+***Jenny Zhang***: xiyuez
 
 ## USER 3
-***UCI Net ID***: ucinetid
+***Yiqiao Zhao***: yiqiaoz1
