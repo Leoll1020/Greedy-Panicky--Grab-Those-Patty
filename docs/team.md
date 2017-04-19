@@ -7,7 +7,7 @@ title:  Team
 
 
 ## USER 1
-***Chen Lu***: clu10
+***Chen Lu***: clu10 IS GENIUS
 
 ## USER 2
 ***Jenny Zhang***: xiyuez
