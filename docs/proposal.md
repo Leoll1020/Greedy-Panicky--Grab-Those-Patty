@@ -16,3 +16,7 @@ In this project, we evaluate the performance of a policy on both the complexity 
 
 For qualitative analysis, we are going to set couple of sanity cases to see if the algorithm works. One important case we need to check is whether the trained agent avoids walking towards zombies. Another case we thought about is to check the whether the algorithm results in similar policies under the same enemy settings (including enemy’s locations, policies and quantity). We may use Monte Carlo method to visualize the algorithm and check if it works. The moonshot case for our project is that the trained agent can survive for infinite length of lifetime in any complex situations, which means it can permanently get rid of enemies.
 
+
+## Appointment with the Instructor ##
+1:30 pm, Tuesday, April 25
+
