@@ -47,8 +47,8 @@ def calc_dis(ob_list,ob_pos):
 #Given A* and bestAngle policy (an angle), return the combined output
 def choosePolicy(a_start_policy, best_angle_policy, agent_position):
 	#suppose here agent_position is (x,z) tuple of agent position
-	walls = object_position('wall')   #should change the name of the trap and mob
-	mobs = object_position('mob')
+	walls = object_position('lava')   #should change the name of the trap and mob
+	mobs = object_position(MOB_TYPE)
 	wall_to_agent = calc_dis(walls,agent_position)
 	w = min(wall_to_agent)
 	mob_to_agent = calc_dis(mobs,agent_position)
