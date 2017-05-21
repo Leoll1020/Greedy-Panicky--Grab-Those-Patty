@@ -10,26 +10,21 @@ import math
 import Tkinter as tk
 from collections import namedtuple
 from ReadMap import *
+import ReadMap
+import Constants
+
+# Mac path problem is not resolved using the following fix
+# mapfile = 'map0.txt'
+# from ReadMap import readMapTXT
+# readMapTXT(os.path.join(os.path.dirname(__file__), mapfile))
+# from ReadMap import *
+
 EntityInfo = namedtuple('EntityInfo', 'x, y, z, yaw, pitch, name, colour, variation, quantity')
 EntityInfo.__new__.__defaults__ = (0, 0, 0, 0, 0, "", "", "", 1)
 
-
-# Display parameters:
-CANVAS_BORDER = 20
-CANVAS_WIDTH = 400
-CANVAS_HEIGHT = CANVAS_BORDER + ((CANVAS_WIDTH - CANVAS_BORDER) * ARENA_ROW / ARENA_COL)
-CANVAS_SCALEX = (CANVAS_WIDTH-CANVAS_BORDER)/ARENA_COL
-CANVAS_SCALEY = (CANVAS_HEIGHT-CANVAS_BORDER)/ARENA_ROW
-CANVAS_ORGX = -ARENA_COL/CANVAS_SCALEX
-CANVAS_ORGY = -ARENA_ROW/CANVAS_SCALEY
-
-# Agent parameters:
-agent_stepsize = 1
-agent_search_resolution = 30 # Smaller values make computation faster, which seems to offset any benefit from the higher resolution.
-agent_goal_weight = 100
-agent_edge_weight = -100
-agent_mob_weight = -10
-agent_turn_weight = 0 # Negative values to penalise turning, positive to encourage.
+import AStarPolicy
+import StandardPolicy
+import Helper
 
 
 recordingsDirectory="FleeRecordings"
@@ -42,88 +37,27 @@ except OSError as exception:
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 
 root = tk.Tk()
-root.wm_title("Collect the " + GOAL_TYPE + "s, dodge the " + MOB_TYPE + "s!")
+root.wm_title("Collect the " + Constants.GOAL_TYPE + "s, dodge the " + Constants.MOB_TYPE + "s!")
 
-canvas = tk.Canvas(root, width=CANVAS_WIDTH, height=CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="black")
+canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH, height=Constants.CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="black")
 canvas.pack()
 root.update()
 
-def findUs(entities):
-    for ent in entities:
-        if ent.name == MOB_TYPE:
-            continue
-        elif ent.name == GOAL_TYPE:
-            continue
-        else:
-            return ent
-
-def getBestAngle(entities, current_yaw, current_health):
-    '''Scan through 360 degrees, looking for the best direction in which to take the next step.'''
-    us = findUs(entities)
-    scores=[]
-    # Normalise current yaw:
-    while current_yaw < 0:
-        current_yaw += 360
-    while current_yaw > 360:
-        current_yaw -= 360
-
-    # Look for best option
-    for i in xrange(agent_search_resolution):
-        # Calculate cost of turning:
-        ang = 2 * math.pi * (i / float(agent_search_resolution))
-        yaw = i * 360.0 / float(agent_search_resolution)
-        yawdist = min(abs(yaw-current_yaw), 360-abs(yaw-current_yaw))
-        turncost = agent_turn_weight * yawdist
-        score = turncost
-
-        # Calculate entity proximity cost for new (x,z):
-        x = us.x + agent_stepsize - math.sin(ang)
-        z = us.z + agent_stepsize * math.cos(ang)
-        for ent in entities:
-            dist = (ent.x - x)*(ent.x - x) + (ent.z - z)*(ent.z - z)
-            if (dist == 0):
-                continue
-            weight = 0.0
-            if ent.name == MOB_TYPE:
-                weight = agent_mob_weight
-                dist -= 1   # assume mobs are moving towards us
-                if dist <= 0:
-                    dist = 0.1
-            elif ent.name == GOAL_TYPE:
-                weight = agent_goal_weight * current_health / 20.0
-            score += weight / float(dist)
-
-        # Calculate cost of proximity to edges:
-        distRight = (2+ARENA_COL/2) - x
-        distLeft = (-2-ARENA_COL/2) - x
-        distTop = (2+ARENA_ROW/2) - z
-        distBottom = (-2-ARENA_ROW/2) - z
-        score += agent_edge_weight / float(distRight * distRight * distRight * distRight)
-        score += agent_edge_weight / float(distLeft * distLeft * distLeft * distLeft)
-        score += agent_edge_weight / float(distTop * distTop * distTop * distTop)
-        score += agent_edge_weight / float(distBottom * distBottom * distBottom * distBottom)
-        scores.append(score)
-
-    # Find best score:
-    i = scores.index(max(scores))
-    # Return as an angle in degrees:
-    return i * 360.0 / float(agent_search_resolution)
-
 def canvasX(x):
-    return (CANVAS_BORDER/2) + (0.5 + x/float(ARENA_COL)) * (CANVAS_WIDTH-CANVAS_BORDER)
+    return (Constants.CANVAS_BORDER/2) + (0.5 + x/float(Constants.ARENA_COL)) * (Constants.CANVAS_WIDTH-Constants.CANVAS_BORDER)
 
 def canvasY(y):
-    return (CANVAS_BORDER/2) + (0.5 + y/float(ARENA_ROW)) * (CANVAS_HEIGHT-CANVAS_BORDER)
+    return (Constants.CANVAS_BORDER/2) + (0.5 + y/float(Constants.ARENA_ROW)) * (Constants.CANVAS_HEIGHT-Constants.CANVAS_BORDER)
 
 def drawMobs(entities, flash):
     canvas.delete("all")
     if flash:
-        canvas.create_rectangle(0,0,CANVAS_WIDTH,CANVAS_HEIGHT,fill="#ff0000") # Pain.
-    canvas.create_rectangle(canvasX(-ARENA_COL/2), canvasY(-ARENA_ROW/2), canvasX(ARENA_COL/2), canvasY(ARENA_ROW/2), fill="#888888")
+        canvas.create_rectangle(0,0,Constants.CANVAS_WIDTH,Constants.CANVAS_HEIGHT,fill="#ff0000") # Pain.
+    canvas.create_rectangle(canvasX(-Constants.ARENA_COL/2), canvasY(-Constants.ARENA_ROW/2), canvasX(Constants.ARENA_COL/2), canvasY(Constants.ARENA_ROW/2), fill="#888888")
     for ent in entities:
-        if ent.name == MOB_TYPE:
+        if ent.name == Constants.MOB_TYPE:
             canvas.create_oval(canvasX(ent.x)-2, canvasY(ent.z)-2, canvasX(ent.x)+2, canvasY(ent.z)+2, fill="#ff2244")
-        elif ent.name == GOAL_TYPE:
+        elif ent.name == Constants.GOAL_TYPE:
             canvas.create_oval(canvasX(ent.x)-3, canvasY(ent.z)-3, canvasX(ent.x)+3, canvasY(ent.z)+3, fill="#4422ff")
         else:
             canvas.create_oval(canvasX(ent.x)-4, canvasY(ent.z)-4, canvasX(ent.x)+4, canvasY(ent.z)+4, fill="#22ff44")
@@ -162,8 +96,8 @@ current_life = 0
 
 for iRepeat in range(num_reps):
     # mission_xml = getMissionXML(MOB_TYPE + " Apocalypse #" + str(iRepeat))
-    mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative')
-
+    #mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
+    mission_xml = readMapXML(filename = os.path.dirname(__file__) + 'map0.txt', mode='Creative')   #If Mac
     
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
     max_retries = 3
@@ -196,6 +130,13 @@ for iRepeat in range(num_reps):
     total_reward = 0
     total_commands = 0
     flash = False
+
+    #a-star policy initialization
+    previous_start=(0,0)
+    previous_policy=0
+    a_star_policy=0
+
+
     while world_state.is_mission_running:
         world_state = agent_host.getWorldState()
         if world_state.number_of_observations_since_last_state > 0:
@@ -212,7 +153,24 @@ for iRepeat in range(num_reps):
             if "entities" in ob:
                 entities = [EntityInfo(**k) for k in ob["entities"]]
                 drawMobs(entities, flash)
-                best_yaw = getBestAngle(entities, current_yaw, current_life)
+
+                #Memorize where WAS I and what WAS my policy
+                try:
+                    previous_start=(me.x,me.z) #Not newly born
+                except:
+                    previous_start=(0,0)
+                previous_policy=a_star_policy  #Newely born
+
+                #Where am I now
+                me=Helper.findUs(entities)
+
+                #Everyone vote!
+                a_star_policy=AStarPolicy.a_star((me.x,me.z), ReadMap.MATRIX, previous_start, previous_policy, None)
+                standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
+                best_yaw=Helper.choosePolicy(a_star_policy, standard_policy)
+
+
+                #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 difference = best_yaw - current_yaw;
                 while difference < -180:
                     difference += 360;

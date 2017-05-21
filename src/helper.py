@@ -1,12 +1,10 @@
-
-import runner
-
 #return a list with width*breadth size. Store state value
-def initializeTable():
+import Constants
+def initializeTable(WIDTH,BREADTH):
 	table = []                                       
-	for i in range (0, runner.WIDTH):       
+	for i in range (0, WIDTH):       
 		row = []                  
-		for j in range (0, runner.BREADTH):    
+		for j in range (0, BREADTH):    
 			row.append(0)       
 		table.append(row) 
 	return table
@@ -24,12 +22,22 @@ def getTable(x,z):
 	int_x, int_z=_currentState(x,z)
 	return table[int_x][int_z]
 
-#Given A* and bestAngle policy, return the combined output
-def choosePolicy(a_start_policy, best_angle_policy):
-	return
+#Given A* and bestAngle policy (an angle), return the combined output
+def choosePolicy(a_star_policy, best_angle_policy):
+	return best_angle_policy #Please remove this line 
 
 #transfer double position to integer
-def _currentState(x,z):
-	ind_x=(x+runner.WIDTH//2)//1  #drop decimals
-	ind_z=(z+runner.BREADTH//2)//1  #drop decimals
+def _currentState(x,z, WIDTH, BREADTH):
+	ind_x=(x+WIDTH//2)//1  #drop decimals
+	ind_z=(z+BREADTH//2)//1  #drop decimals
 	return (ind_x,ind_z)
+
+#from all entities find the agent
+def findUs(entities):
+    for ent in entities:
+        if ent.name == Constants.MOB_TYPE:
+            continue
+        elif ent.name == Constants.GOAL_TYPE:
+            continue
+        else:
+            return ent
