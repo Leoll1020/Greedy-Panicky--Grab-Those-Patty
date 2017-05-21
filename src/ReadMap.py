@@ -3,16 +3,9 @@ import errno
 import math
 import re
 import os
-# Task parameters:
-GOAL_REWARD = 100
-MOB_TYPE = "Endermite"  # Change for fun, but note that spawning conditions have to be correct - eg spiders will require darker conditions.
-NUM_GOALS = 20
-GOAL_TYPE = "apple"
-ARENA_COL = 60   # number of columns
-ARENA_ROW = 60 # number of rows
+import Constants
+
 MATRIX = []  # Map represented by 2d array
-
-
 # XML format documentation: http://microsoft.github.io/malmo/0.21.0/Schemas/Mission.html
 
 
@@ -39,10 +32,10 @@ def readMapTXT(filename):
                     continue
 
                 row = re.split('\|', rest)[:-1]
-                assert len(row) == ARENA_COL, 'Error in reading maps: arena width does not match the number of columns'
+                assert len(row) == Constants.ARENA_COL, 'Error in reading maps: arena width does not match the number of columns'
                 MATRIX.append(row)
 
-            assert len(MATRIX) == ARENA_ROW, 'Error in reading maps: arena breadth does not match the number of rows'
+            assert len(MATRIX) == Constants.ARENA_ROW, 'Error in reading maps: arena breadth does not match the number of rows'
 
 
     except IOError as e:
@@ -63,8 +56,8 @@ def genRandomGoalXML(num):
     ''' Build an XML string that contains some randomly positioned goal items'''
     xml=""
     for item in range(num):
-        x = str(random.randint(-ARENA_COL/2,ARENA_COL/2))
-        z = str(random.randint(-ARENA_ROW/2,ARENA_ROW/2))
+        x = str(random.randint(-Constants.ARENA_COL/2,Constants.ARENA_COL/2))
+        z = str(random.randint(-Constants.ARENA_ROW/2,Constants.ARENA_ROW/2))
         xml += '''<DrawItem x="''' + x + '''" y="210" z="''' + z + '''" type="''' + GOAL_TYPE + '''"/>'''
     return xml
 
@@ -75,13 +68,13 @@ def genGoalXML():
     for i in range(len(MATRIX)):
         for j in range(len(MATRIX[i])):
             if MATRIX[i][j] == 'g':
-                coors.append((j-ARENA_COL/2, i-ARENA_ROW/2,))
+                coors.append((j-Constants.ARENA_COL/2, i-Constants.ARENA_ROW/2,))
 
     for x, z in coors:
-        xml += '''<DrawItem x="''' + str(x) + '''" y="210" z="''' + str(z) + '''" type="''' + GOAL_TYPE + '''"/>'''
+        xml += '''<DrawItem x="''' + str(x) + '''" y="210" z="''' + str(z) + '''" type="''' + Constants.GOAL_TYPE + '''"/>'''
 
     # if the number of goals in the map.txt is not sufficient, generate random goals as supplement
-    xml += genRandomGoalXML(NUM_GOALS - len(coors))
+    xml += genRandomGoalXML(Constants.NUM_GOALS - len(coors))
     
     return xml
 
@@ -92,7 +85,7 @@ def genLavaXML():
     for i in range(len(MATRIX)):
         for j in range(len(MATRIX[i])):
             if MATRIX[i][j] == 'l':
-                xml += '''<DrawBlock x="''' + str(j-ARENA_COL/2) + '''" y="206" z="''' + str(i-ARENA_ROW/2) + '''" type="lava"/>'''
+                xml += '''<DrawBlock x="''' + str(j-Constants.ARENA_COL/2) + '''" y="206" z="''' + str(i-Constants.ARENA_ROW/2) + '''" type="lava"/>'''
 
     
     return xml
@@ -119,7 +112,7 @@ def getCorner(index,top,left,expand=0,y=206):
 
 
 def print_task_parameters():
-    global NUM_GOALS, GOAL_TYPE, ARENA_ROW, ARENA_COL
+    #global NUM_GOALS, GOAL_TYPE, ARENA_ROW, ARENA_COL
     print 'GOAL_REWARD:', GOAL_REWARD, 
     print 'MOB_TYPE:', MOB_TYPE,
     print 'NUM_GOALS:', NUM_GOALS,
@@ -151,7 +144,7 @@ def readMapXML(filename = 'map0.txt', mode ='Survive'):
 
 def getMissionXML(summary, mode='Survive'):
     ''' Build an XML mission string.'''
-    spawn_end_tag = ' type="mob_spawner" variant="' + MOB_TYPE + '"/>'
+    spawn_end_tag = ' type="mob_spawner" variant="' + Constants.MOB_TYPE + '"/>'
     return '''<?xml version="1.0" encoding="UTF-8" ?>
     <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <About>
@@ -197,11 +190,11 @@ def getMissionXML(summary, mode='Survive'):
                 <ContinuousMovementCommands turnSpeedDegs="360"/>
                 <AbsoluteMovementCommands/>
                 <ObservationFromNearbyEntities>
-                    <Range name="entities" xrange="'''+str(ARENA_COL)+'''" yrange="2" zrange="'''+str(ARENA_ROW)+'''" />
+                    <Range name="entities" xrange="'''+str(Constants.ARENA_COL)+'''" yrange="2" zrange="'''+str(Constants.ARENA_ROW)+'''" />
                 </ObservationFromNearbyEntities>
                 <ObservationFromFullStats/>
                 <RewardForCollectingItem>
-                    <Item type="'''+GOAL_TYPE+'''" reward="'''+str(GOAL_REWARD)+'''"/>
+                    <Item type="'''+Constants.GOAL_TYPE+'''" reward="'''+str(Constants.GOAL_REWARD)+'''"/>
                 </RewardForCollectingItem>
             </AgentHandlers>
         </AgentSection>
