@@ -164,7 +164,7 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 		visited.add(curr)
 		if curr in goals_states:
 			previous_policy = retreive_path(start, curr, pred)
-			print start, 'to', curr, ':', previous_policy
+			
 			break
 
 		# add positions arround curr that are not visited
@@ -194,9 +194,12 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	# helper.print_dict(fScores, name='fScore')
 		
 
-	next_block = previous_policy[0]
+	next_block = previous_policy[1]
 	#find the angle of close_list
 	# return 360
+
+	print start, 'to', curr, ':', previous_policy
+	print 'next step', start, 'to', next_block, '==', position, 'to', helper.stateTOposition(*next_block)
 	return angle_between_position(position, 
 			helper.stateTOposition(*next_block))
 

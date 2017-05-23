@@ -185,7 +185,7 @@ for iRepeat in range(num_reps):
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 best_yaw=helper.choosePolicy(a_star_policy, standard_policy,(me.x, me.z))
                 
-
+                print 'best:', best_yaw
                 #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 difference = best_yaw - current_yaw;
                 while difference < -180:
@@ -193,13 +193,15 @@ for iRepeat in range(num_reps):
                 while difference > 180:
                     difference -= 360;
                 difference /= 180.0;
-                print 'difference: ', difference
+                
                 Constants.agent_host.sendCommand("turn " + str(difference))
                 total_commands += 1
                 # break
         if Constants.world_state.number_of_rewards_since_last_state > 0:
             # A reward signal has come in - see what it is:
             total_reward += Constants.world_state.rewards[-1].getValue()
+            # Constants.agent_host.sendCommand("move 0")    # run!
+            # break
         time.sleep(0.02)
         flash = False
 
