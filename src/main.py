@@ -71,7 +71,7 @@ root.wm_title("Collecting apples, avoiding lava and doging enemies!")
 
 
 
-canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH+30, height=Constants.CANVAS_HEIGHT+30, borderwidth=0, highlightthickness=0, bg="white")
+canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH, height=Constants.CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="white")
 canvas.pack()
 root.update()
 

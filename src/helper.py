@@ -85,13 +85,14 @@ def stateTOposition(row, col):
 
 #from all entities find the agent
 def findUs(entities):
-    for ent in entities:
-        if ent.name == Constants.MOB_TYPE:
-            continue
-        elif ent.name == Constants.GOAL_TYPE:
-            continue
-        else:
-            return ent
+	print(entities)
+	for ent in entities:
+		if ent.name == Constants.MOB_TYPE:
+			continue
+		elif ent.name == Constants.GOAL_TYPE:
+			continue
+		else:
+			return ent
 
 
 def print_dict(dictionary, name = ''):
@@ -101,8 +102,8 @@ def print_dict(dictionary, name = ''):
 
 
 def print_matrix(matrix):
-    print '|' + '|'.join(str(i%10) for i in range(len(matrix)))
-    for j in range(len(matrix)):
-        print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
+	print '|' + '|'.join(str(i%10) for i in range(len(matrix)))
+	for j in range(len(matrix)):
+		print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
 
 
