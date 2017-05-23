@@ -62,6 +62,7 @@ def choosePolicy(a_start_policy, best_angle_policy, agent_position,agent_host):
 	# _m = m/(w+m)
 	# return _w*a_start_policy+_m*best_angle_policy
 	return best_angle_policy
+	# return a_start_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
@@ -69,6 +70,10 @@ def _currentState(x,z, WIDTH, BREADTH):
 	ind_z=(z+BREADTH//2)//1  #drop decimals
 	return (ind_x,ind_z)
 
+def currentState(x, z):
+	ind_x=(x+Constants.ARENA_ROW//2)//1  #drop decimals
+	ind_z=(z+Constants.ARENA_COL//2)//1  #drop decimals
+	return (int(ind_x),int(ind_z))
 #from all entities find the agent
 def findUs(entities):
     for ent in entities:
@@ -82,7 +87,7 @@ def findUs(entities):
 
 def print_dict(dictionary, name = ''):
 	print 'name:', name
-	for key, val in dictionary.items():
+	for key, val in sorted(dictionary.items(), key=lambda x: x[0]):
 		print '\t',key, ':', val
 
 

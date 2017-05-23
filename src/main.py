@@ -178,13 +178,16 @@ for iRepeat in range(num_reps):
                 while difference > 180:
                     difference -= 360;
                 difference /= 180.0;
+                print 'difference: ', difference
                 agent_host.sendCommand("turn " + str(difference))
                 total_commands += 1
+                # break
         if world_state.number_of_rewards_since_last_state > 0:
             # A reward signal has come in - see what it is:
             total_reward += world_state.rewards[-1].getValue()
         time.sleep(0.02)
         flash = False
+
 
     # mission has ended.
     for error in world_state.errors:
