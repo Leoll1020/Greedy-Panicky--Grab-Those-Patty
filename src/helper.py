@@ -28,22 +28,17 @@ def getTable(x,z):
 #find the locations of the certain objects
 #according to assignment2.py
 #can be replaced if there is a similar one 
-def object_position(object_type):
+def object_position(object_type, agent_host):
 	positions = []
-	# Constants.agent_host = MalmoPython.AgentHost()
-	# while True:
-	# world_state = Constants.agent_host.getWorldState()
-	# print 'world_state.observations',len(world_state.observations)
-	msg = Constants.world_state.observations[-1].text
-	ob = json.loads(msg)
-	try: 
+	# agent_host = MalmoPython.AgentHost()
+	while True:
+		world_state = agent_host.getWorldState()
+		msg = world_state.observations[-1].text
+		ob = json.loads(msg)
+		print ob
 		for i in ob[object_type]:
 			positions.append((i['x'],i['z']))
-	except KeyError:
-		for i in ob['entities']:
-			if i['name'] == object_type:
-				positions.append((i['x'], i['z']))
-	return positions
+		return positions
 
 #given a list of objects and the position of the agent, return a list of distance^2
 def calc_dis(ob_list,ob_pos):
@@ -54,11 +49,11 @@ def calc_dis(ob_list,ob_pos):
 ###################################
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy, agent_position):
+def choosePolicy(a_start_policy, best_angle_policy, agent_position,agent_host):
 	#suppose here agent_position is (x,z) tuple of agent position
 	# print agent_position
-	# walls = object_position('lava')   #should change the name of the trap and mob
-	# mobs = object_position(MOB_TYPE)
+	# walls = object_position('lava', agent_host)   #should change the name of the trap and mob
+	# mobs = object_position(MOB_TYPE, agent_host)
 	# wall_to_agent = calc_dis(walls,agent_position)
 	# w = min(wall_to_agent)
 	# mob_to_agent = calc_dis(mobs,agent_position)
@@ -66,8 +61,8 @@ def choosePolicy(a_start_policy, best_angle_policy, agent_position):
 	# _w = w/(w+m)
 	# _m = m/(w+m)
 	# return _w*a_start_policy+_m*best_angle_policy
-	# return best_angle_policy
-	return a_start_policy
+	return best_angle_policy
+	# return a_start_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
@@ -75,14 +70,10 @@ def _currentState(x,z, WIDTH, BREADTH):
 	ind_z=(z+BREADTH//2)//1  #drop decimals
 	return (ind_x,ind_z)
 
-def positionTOstate(x, z):
-	return (int(z+Constants.ARENA_ROW//2),
-			int(x+Constants.ARENA_COL//2))
-
-def stateTOposition(row, col):
-	return (col-Constants.ARENA_COL//2+0.5, 
-			row-Constants.ARENA_ROW//2+0.5)
-
+def currentState(x, z):
+	ind_x=(x+Constants.ARENA_ROW//2)//1  #drop decimals
+	ind_z=(z+Constants.ARENA_COL//2)//1  #drop decimals
+	return (int(ind_x),int(ind_z))
 #from all entities find the agent
 def findUs(entities):
     for ent in entities:
