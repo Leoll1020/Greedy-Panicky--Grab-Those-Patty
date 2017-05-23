@@ -36,13 +36,6 @@ except OSError as exception:
 
 sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
 
-root = tk.Tk()
-root.wm_title("Collect the " + Constants.GOAL_TYPE + "s, dodge the " + Constants.MOB_TYPE + "s!")
-
-canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH, height=Constants.CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="black")
-canvas.pack()
-root.update()
-
 def canvasX(x):
     return (Constants.CANVAS_BORDER/2) + (0.5 + x/float(Constants.ARENA_COL)) * (Constants.CANVAS_WIDTH-Constants.CANVAS_BORDER)
 
@@ -51,9 +44,10 @@ def canvasY(y):
 
 def drawMobs(entities, flash):
     canvas.delete("all")
-    if flash:
-        canvas.create_rectangle(0,0,Constants.CANVAS_WIDTH,Constants.CANVAS_HEIGHT,fill="#ff0000") # Pain.
-    canvas.create_rectangle(canvasX(-Constants.ARENA_COL/2), canvasY(-Constants.ARENA_ROW/2), canvasX(Constants.ARENA_COL/2), canvasY(Constants.ARENA_ROW/2), fill="#888888")
+    # if flash:
+    #     canvas.create_rectangle(0,0,Constants.CANVAS_WIDTH,Constants.CANVAS_HEIGHT,fill="#ff0000") # Pain.
+    # canvas.create_rectangle(canvasX(-Constants.ARENA_COL/2), canvasY(-Constants.ARENA_ROW/2), canvasX(Constants.ARENA_COL/2), canvasY(Constants.ARENA_ROW/2), fill="#888888")
+    canvas.create_rectangle(0,0,Constants.CANVAS_WIDTH,Constants.CANVAS_HEIGHT,fill="#666666")
     for ent in entities:
         if ent.name == Constants.MOB_TYPE:
             canvas.create_oval(canvasX(ent.x)-2, canvasY(ent.z)-2, canvasX(ent.x)+2, canvasY(ent.z)+2, fill="#ff2244")
@@ -62,6 +56,25 @@ def drawMobs(entities, flash):
         else:
             canvas.create_oval(canvasX(ent.x)-4, canvasY(ent.z)-4, canvasX(ent.x)+4, canvasY(ent.z)+4, fill="#22ff44")
     root.update()
+
+def drawGrids():
+    space_width=Constants.CANVAS_WIDTH/float(Constants.ARENA_COL)
+    space_height=Constants.CANVAS_HEIGHT/float(Constants.ARENA_ROW)
+    for x in range(0,Constants.ARENA_COL+1):
+        canvas.create_line(space_height*x,0,space_height*x,Constants.CANVAS_HEIGHT)
+    for x in range(0,Constants.ARENA_ROW+1):
+        canvas.create_line(0,space_width*x,Constants.CANVAS_WIDTH,space_width*x)
+    root.update()
+
+root = tk.Tk()
+root.wm_title("Collecting apples, avoiding lava and doging enemies!")
+
+
+
+canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH+30, height=Constants.CANVAS_HEIGHT+30, borderwidth=0, highlightthickness=0, bg="white")
+canvas.pack()
+root.update()
+
 
 validate = True
 # Create a pool of Minecraft Mod clients.
@@ -153,6 +166,8 @@ for iRepeat in range(num_reps):
             if "entities" in ob:
                 entities = [EntityInfo(**k) for k in ob["entities"]]
                 drawMobs(entities, flash)
+                drawGrids()
+                
 
                 #Memorize where WAS I and what WAS my policy
                 try:
