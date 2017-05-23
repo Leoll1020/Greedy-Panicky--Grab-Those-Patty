@@ -85,7 +85,7 @@ def stateTOposition(row, col):
 
 #from all entities find the agent
 def findUs(entities):
-	print(entities)
+	#print(entities)
 	for ent in entities:
 		if ent.name == Constants.MOB_TYPE:
 			continue
