@@ -56,14 +56,42 @@ def distance(a, b, map):
 	return max(abs(a[0]-b[0]), abs(a[1]-b[1]))
 
 def angle_between_state(a, b, map):
-
+	'''
+	|  135.00  |  180.00  |  225.00  |
+	|  90.00   |  270.00  |  270.00  |
+	|  45.00   |  360.00  |  315.00  |
+	'''
+	c = 0
+	if a == b:
+		return 0
+	if b[1] >= a[1]:
+		c = 270
+	else: 
+		c = 90
 	if a[1] == b[1]:
-		return (a[0]-b[0])*90.0
+		return (b[0]-a[0])*90.0 + c
 	else:
 		return math.degrees(
-					math.atan(float(b[0]-a[0])/float(a[1]-b[1]))
-				)
+					math.atan(float(b[0]-a[0])/float(b[1]-a[1]))
+				) + c
 	
+def angle_between_position(p1, p2):
+	if helper.positionTOstate(p1[0], p1[1]) == helper.positionTOstate(p2[0], p2[1]):
+		return 0
+	
+	if p2[0] > p1[0]:
+		c = 270
+	else: 
+		c = 90
+	dx = p2[0]-p1[0]
+	dz = p2[1]-p1[1]
+	if dx == 0:
+		if dz > 0: return 0
+		else: return 180
+	else:
+		return math.degrees(
+					math.atan(dz/dx)
+				) + c
 
 
 def heuristic(state, goals, map, angle):
@@ -77,11 +105,11 @@ def heuristic(state, goals, map, angle):
 		return min( distance(state, goal,map) for goal in goals)
 	
 def retreive_path(start, dest, pred):
-	path = []
-	helper.print_dict(pred, name='pred')
+	path = [dest]
+	# helper.print_dict(pred, name='pred')
 	current = dest
 	while current != start:
-		print current
+		# print current
 		current = pred[current]
 		path.append(current)
 	path.reverse()
@@ -96,21 +124,27 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	#TODO: 
 	#	Check if the action of start state has been calculated
 
+	# return 0
 	
 	
-	# goals = object_position(Constants.GOAL_TYPE, agent_host)
-	goals = []
-	for i in range(len(map)):
-		for j in range(len(map[i])):
-			if map[i][j] == 'g':
-				goals.append((j, i))
+	goals_location = helper.object_position(Constants.GOAL_TYPE)
+	goals_states = [helper.positionTOstate(*p) for p in goals_location]
+	# for i in range(len(map)):
+	# 	for j in range(len(map[i])):
+	# 		if map[i][j] == 'g':
+	# 			goals_states.append((i, j))
 
-	start = helper.currentState(position[0],position[1])
+	# print "goals_location", goals_location
+	# print 'goals_states', goals_states
+
+
+	start = helper.positionTOstate(position[0],position[1])
 	if start in previous_policy:
 		at = previous_policy.index(start)
 		if at != len(previous_policy):
 			previous_policy = previous_policy[at:]
-			return angle_between_state(start, previous_policy[1])
+			return angle_between_position(position, 
+					helper.stateTOposition(*previous_policy[1]))
 	else:
 		previous_policy = []
 
@@ -121,16 +155,16 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	gScores = defaultdict(lambda : float('inf')) # cost from start to state
 	fScores = defaultdict(None)  # ~cost from state to goal
 
-	pred = defaultdict(lambda : start)
+	pred = defaultdict(lambda : (float('inf'), float('inf')))
 	visited = set()
 	gScores[start] = 0
 
 
 	for curr in unvisted:
 		visited.add(curr)
-		if curr in goals:
+		if curr in goals_states:
 			previous_policy = retreive_path(start, curr, pred)
-			print start, 'to', curr, ':', previous_policy
+			
 			break
 
 		# add positions arround curr that are not visited
@@ -148,7 +182,7 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 
 				pred[sur] = curr
 				gScores[sur] = gScores[curr] + dist
-				fScores[sur] = heuristic(sur, goals, map, angle) + gScores[sur]
+				fScores[sur] = heuristic(sur, goals_states, map, angle) + gScores[sur]
 				
 
 
@@ -157,12 +191,19 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 			
 
 	# helper.print_dict(gScores, name='gScore')
-	helper.print_dict(fScores, name='fScore')
+	# helper.print_dict(fScores, name='fScore')
 		
 
-	next_block = previous_policy[0]
+	next_block = previous_policy[1]
 	#find the angle of close_list
-	return angle_between_state(start, next_block, map)
+	# return 360
+
+	print start, 'to', curr, ':', previous_policy
+	print 'next step', start, 'to', next_block, '==', position, 'to', helper.stateTOposition(*next_block)
+	return angle_between_position(position, 
+			helper.stateTOposition(*next_block))
+
+
 
 # def main(case,curr_state,n):
 # 	#give case number return angle
@@ -185,12 +226,22 @@ if __name__ == '__main__':
 	# from ReadMap import MATRIX
 	helper.print_matrix(Constants.MATRIX)
 
-	a_star((0,0), [(3, 8)], Constants.MATRIX,(0,0),(0,0),depth='inf')
+	# a_star((0,0), [(3, 8)], Constants.MATRIX,(0,0),(0,0),depth='inf')
 
 	for i in range(-1, 2):
 		# print (i,j), '-', (0,0), ':',
 		# print angle_between_state((0,0), (i,j), MATRIX)
 		print '|'+'|'.join('{:^10.2f}'.format(
 			angle_between_state((0,0), (i,j), Constants.MATRIX)) 
+				for j in range(-1, 2)
+				)+ '|'
+
+
+	for i in range(-1, 2):
+		# for j in range(-1, 2):
+		# 	print (j-), '-', (0,0), ':',
+		# 	print angle_between_position((0.0,0.0), (j+0.5,i+0.5))
+		print '|'+'|'.join('{:^10.2f}'.format(
+			angle_between_position((0.5,0.5), (j+0.5,i+0.5))) 
 				for j in range(-1, 2)
 				)+ '|'
