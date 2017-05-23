@@ -24,8 +24,8 @@ EntityInfo.__new__.__defaults__ = (0, 0, 0, 0, 0, "", "", "", 1)
 
 import AStarPolicy
 import StandardPolicy
-import Helper
-
+import helper
+mapfile = 'map0.txt'
 
 recordingsDirectory="FleeRecordings"
 try:
@@ -97,7 +97,7 @@ current_life = 0
 for iRepeat in range(num_reps):
     # mission_xml = getMissionXML(MOB_TYPE + " Apocalypse #" + str(iRepeat))
     #mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
-    mission_xml = readMapXML(filename = os.path.dirname(__file__) + 'map0.txt', mode='Creative')   #If Mac
+    mission_xml = readMapXML(filename = os.path.join(os.path.dirname(__file__), mapfile), mode='Creative')   #If Mac
     
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
     max_retries = 3
@@ -162,12 +162,13 @@ for iRepeat in range(num_reps):
                 previous_policy=a_star_policy  #Newely born
 
                 #Where am I now
-                me=Helper.findUs(entities)
+                me=helper.findUs(entities)
 
                 #Everyone vote!
-                a_star_policy=AStarPolicy.a_star((me.x,me.z), ReadMap.MATRIX, previous_start, previous_policy, None)
+                a_star_policy=AStarPolicy.a_star((me.x,me.z), current_yaw, Constants.MATRIX, 
+                                    previous_start, Constants.AStar_Policy)
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
-                best_yaw=Helper.choosePolicy(a_star_policy, standard_policy)
+                best_yaw=helper.choosePolicy(a_star_policy, standard_policy,(me.x, me.z),agent_host)
 
 
                 #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)

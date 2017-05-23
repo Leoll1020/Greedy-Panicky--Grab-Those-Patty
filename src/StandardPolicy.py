@@ -12,13 +12,13 @@ from collections import namedtuple
 from ReadMap import *
 import Constants
 
-import Helper
+import helper
 
 
 
 def returnStandardPolicy(entities, current_yaw, current_health):
     '''Scan through 360 degrees, looking for the best direction in which to take the next step.'''
-    us = Helper.findUs(entities)
+    us = helper.findUs(entities)
     scores=[]
     # Normalise current yaw:
     while current_yaw < 0:

@@ -5,6 +5,7 @@ NUM_GOALS = 20
 GOAL_TYPE = "apple"
 ARENA_COL = 15   # number of columns
 ARENA_ROW = 15 # number of rows
+MATRIX = []  # Map represented by 2d array
 
 
 
@@ -24,3 +25,7 @@ agent_goal_weight = 100
 agent_edge_weight = -100
 agent_mob_weight = -10
 agent_turn_weight = 0 # Negative values to penalise turning, positive to encourage.
+
+
+
+AStar_Policy = []
