@@ -21,10 +21,9 @@ def readMapTXT(filename):
     try:
     
         with open(filename,'r') as file:
-            global NUM_GOALS, GOAL_TYPE, ARENA_ROW, ARENA_COL
             for line in file:
                 if '=' in line:
-                    exec(line, globals())
+                    # exec(line, globals())
                     continue
                 
                 rest = line.partition('#')[0]
@@ -58,7 +57,7 @@ def genRandomGoalXML(num):
     for item in range(num):
         x = str(random.randint(-Constants.ARENA_COL/2,Constants.ARENA_COL/2))
         z = str(random.randint(-Constants.ARENA_ROW/2,Constants.ARENA_ROW/2))
-        xml += '''<DrawItem x="''' + x + '''" y="210" z="''' + z + '''" type="''' + GOAL_TYPE + '''"/>'''
+        xml += '''<DrawItem x="''' + x + '''" y="210" z="''' + z + '''" type="''' + Constants.GOAL_TYPE + '''"/>'''
     return xml
 
 def genGoalXML():
@@ -105,20 +104,20 @@ def genLavaXML():
 
 def getCorner(index,top,left,expand=0,y=206):
     ''' Return part of the XML string that defines the requested corner'''
-    x = str(-(expand+ARENA_COL/2)) if left else str(expand+ARENA_COL/2)
-    z = str(-(expand+ARENA_ROW/2)) if top else str(expand+ARENA_ROW/2)
+    x = str(-(expand+Constants.ARENA_COL/2)) if left else str(expand+Constants.ARENA_COL/2)
+    z = str(-(expand+Constants.ARENA_ROW/2)) if top else str(expand+Constants.ARENA_ROW/2)
     return 'x'+index+'="'+x+'" y'+index+'="' +str(y)+'" z'+index+'="'+z+'"'
 
 
 
-def print_task_parameters():
-    #global NUM_GOALS, GOAL_TYPE, ARENA_ROW, ARENA_COL
-    print 'GOAL_REWARD:', GOAL_REWARD, 
-    print 'MOB_TYPE:', MOB_TYPE,
-    print 'NUM_GOALS:', NUM_GOALS,
-    print 'GOAL_TYPE:', GOAL_TYPE,
-    print 'ARENA_COL:', ARENA_COL,
-    print 'ARENA_ROW:', ARENA_ROW
+# def print_task_parameters():
+#     #global NUM_GOALS, GOAL_TYPE, ARENA_ROW, ARENA_COL
+#     print 'GOAL_REWARD:', GOAL_REWARD, 
+#     print 'MOB_TYPE:', MOB_TYPE,
+#     print 'NUM_GOALS:', NUM_GOALS,
+#     print 'GOAL_TYPE:', GOAL_TYPE,
+#     print 'ARENA_COL:', ARENA_COL,
+#     print 'ARENA_ROW:', ARENA_ROW
 
 # def print_matrix():
 #     print '|' + '|'.join(str(i%10) for i in range(1, ARENA_COL+1))

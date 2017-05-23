@@ -71,13 +71,24 @@ def heuristic(state, goals, map, angle):
 	# return float
 	if map[state[0]][state[1]] == 'l':
 		return float('inf')
+	if map[state[0]][state[1]] == 'g':
+		return -100.0
 	else:
 		return min( distance(state, goal,map) for goal in goals)
 	
-
+def retreive_path(start, dest, pred):
+	path = []
+	helper.print_dict(pred, name='pred')
+	current = dest
+	while current != start:
+		print current
+		current = pred[current]
+		path.append(current)
+	path.reverse()
+	return path
 
 #def a_star(start,goal):
-def a_star(position,angle, map, previous_start, previous_policy, depth=2):
+def a_star(position,angle, map, previous_start, previous_policy, depth=float('inf')):
 	# start:(int, int),map:MATRIX, 
 	# goals:coordinates of all goals
 	#position of current position(start), and apple (goal)
@@ -85,19 +96,23 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=2):
 	#TODO: 
 	#	Check if the action of start state has been calculated
 
-	start = (int(position[0]), int(position[1]))
-	if start in previous_policy:
-		at = previous_policy.index(start)
-		if at != len(previous_policy):
-			return angle_between_state(start, previous_policy[at+1])
-	else:
-		previous_policy = []
 	
+	
+	# goals = object_position(Constants.GOAL_TYPE, agent_host)
 	goals = []
 	for i in range(len(map)):
 		for j in range(len(map[i])):
 			if map[i][j] == 'g':
 				goals.append((j, i))
+
+	start = helper.currentState(position[0],position[1])
+	if start in previous_policy:
+		at = previous_policy.index(start)
+		if at != len(previous_policy):
+			previous_policy = previous_policy[at:]
+			return angle_between_state(start, previous_policy[1])
+	else:
+		previous_policy = []
 
 
 	unvisted = priorityDictionary(sort_by = lambda x: x[1])
@@ -114,6 +129,8 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=2):
 	for curr in unvisted:
 		visited.add(curr)
 		if curr in goals:
+			previous_policy = retreive_path(start, curr, pred)
+			print start, 'to', curr, ':', previous_policy
 			break
 
 		# add positions arround curr that are not visited
@@ -139,25 +156,25 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=2):
 				unvisted[sur] = fScores[sur]
 			
 
-	helper.print_dict(gScores, name='gScore')
+	# helper.print_dict(gScores, name='gScore')
 	helper.print_dict(fScores, name='fScore')
 		
 
-
+	next_block = previous_policy[0]
 	#find the angle of close_list
-	return angle_between_state(start, (0,0), map)
+	return angle_between_state(start, next_block, map)
 
-def main(case,curr_state,n):
-	#give case number return angle
-	c = decide_case
-	if c ==1:
-		return random_angle
-	elif c == 2:
-		return opposite_to_trap
-	elif c ==3:
-		return toward_apple
-	else:
-		return a_star(curr_state,apple_position)
+# def main(case,curr_state,n):
+# 	#give case number return angle
+# 	c = decide_case
+# 	if c ==1:
+# 		return random_angle
+# 	elif c == 2:
+# 		return opposite_to_trap
+# 	elif c ==3:
+# 		return toward_apple
+# 	else:
+# 		return a_star(curr_state,apple_position)
 
 
 

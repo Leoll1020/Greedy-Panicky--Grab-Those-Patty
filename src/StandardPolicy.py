@@ -66,4 +66,6 @@ def returnStandardPolicy(entities, current_yaw, current_health):
     # Find best score:
     i = scores.index(max(scores))
     # Return as an angle in degrees:
+    print 'best:', i * 360.0 / float(Constants.agent_search_resolution)
+
     return i * 360.0 / float(Constants.agent_search_resolution)
