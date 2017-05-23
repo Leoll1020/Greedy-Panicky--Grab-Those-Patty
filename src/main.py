@@ -98,7 +98,8 @@ if Constants.agent_host.receivedArgument("help"):
     print Constants.agent_host.getUsage()
     exit(0)
 
-if Constants.agent_host.receivedArgument("test"):
+# if Constants.agent_host.receivedArgument("test"):
+if 'test' in sys.argv:
     num_reps = 1
 else:
     num_reps = 30000
@@ -183,7 +184,7 @@ for iRepeat in range(num_reps):
                                     previous_start, Constants.AStar_Policy)
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 best_yaw=helper.choosePolicy(a_star_policy, standard_policy,(me.x, me.z))
-
+                
 
                 #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 difference = best_yaw - current_yaw;

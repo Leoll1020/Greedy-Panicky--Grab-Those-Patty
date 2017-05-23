@@ -61,6 +61,9 @@ def angle_between_state(a, b, map):
 	|  90.00   |  270.00  |  270.00  |
 	|  45.00   |  360.00  |  315.00  |
 	'''
+	c = 0
+	if a == b:
+		return 0
 	if b[1] >= a[1]:
 		c = 270
 	else: 
@@ -73,15 +76,21 @@ def angle_between_state(a, b, map):
 				) + c
 	
 def angle_between_position(p1, p2):
-	if b[1] >= a[1]:
+	if helper.positionTOstate(p1[0], p1[1]) == helper.positionTOstate(p2[0], p2[1]):
+		return 0
+	
+	if p2[0] > p1[0]:
 		c = 270
 	else: 
 		c = 90
-	if a[1] == b[1]:
-		return (b[0]-a[0])*90.0 + c
+	dx = p2[0]-p1[0]
+	dz = p2[1]-p1[1]
+	if dx == 0:
+		if dz > 0: return 0
+		else: return 180
 	else:
 		return math.degrees(
-					math.atan(float(b[0]-a[0])/float(b[1]-a[1])
+					math.atan(dz/dx)
 				) + c
 
 
@@ -125,8 +134,8 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	# 		if map[i][j] == 'g':
 	# 			goals_states.append((i, j))
 
-	print "goals_location", goals_location
-	print 'goals_states', goals_states
+	# print "goals_location", goals_location
+	# print 'goals_states', goals_states
 
 
 	start = helper.positionTOstate(position[0],position[1])
@@ -188,7 +197,8 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	next_block = previous_policy[0]
 	#find the angle of close_list
 	# return 360
-	return angle_between_state(position, next_block, map)
+	return angle_between_position(position, 
+			helper.stateTOposition(*next_block))
 
 
 
@@ -213,7 +223,7 @@ if __name__ == '__main__':
 	# from ReadMap import MATRIX
 	helper.print_matrix(Constants.MATRIX)
 
-	a_star((0,0), [(3, 8)], Constants.MATRIX,(0,0),(0,0),depth='inf')
+	# a_star((0,0), [(3, 8)], Constants.MATRIX,(0,0),(0,0),depth='inf')
 
 	for i in range(-1, 2):
 		# print (i,j), '-', (0,0), ':',
@@ -225,9 +235,10 @@ if __name__ == '__main__':
 
 
 	for i in range(-1, 2):
-		# print (i,j), '-', (0,0), ':',
-		# print angle_between_state((0,0), (i,j), MATRIX)
+		# for j in range(-1, 2):
+		# 	print (j-), '-', (0,0), ':',
+		# 	print angle_between_position((0.0,0.0), (j+0.5,i+0.5))
 		print '|'+'|'.join('{:^10.2f}'.format(
-			angle_between_position((0,0), (i,j), Constants.MATRIX)) 
+			angle_between_position((0.5,0.5), (j+0.5,i+0.5))) 
 				for j in range(-1, 2)
 				)+ '|'
