@@ -4,8 +4,9 @@ import math
 import re
 import os
 import Constants
+import helper
 
-MATRIX = []  # Map represented by 2d array
+# MATRIX = []  # Map represented by 2d array
 # XML format documentation: http://microsoft.github.io/malmo/0.21.0/Schemas/Mission.html
 
 
@@ -17,7 +18,6 @@ MATRIX = []  # Map represented by 2d array
 ##########################################################################
 
 def readMapTXT(filename):
-    global MATRIX
     try:
     
         with open(filename,'r') as file:
@@ -33,9 +33,9 @@ def readMapTXT(filename):
 
                 row = re.split('\|', rest)[:-1]
                 assert len(row) == Constants.ARENA_COL, 'Error in reading maps: arena width does not match the number of columns'
-                MATRIX.append(row)
+                Constants.MATRIX.append(row)
 
-            assert len(MATRIX) == Constants.ARENA_ROW, 'Error in reading maps: arena breadth does not match the number of rows'
+            assert len(Constants.MATRIX) == Constants.ARENA_ROW, 'Error in reading maps: arena breadth does not match the number of rows'
 
 
     except IOError as e:
@@ -65,9 +65,9 @@ def genGoalXML():
     # <DrawItem  x="0" y="206" z="0" type="apple"/>
     xml = ""
     coors = []
-    for i in range(len(MATRIX)):
-        for j in range(len(MATRIX[i])):
-            if MATRIX[i][j] == 'g':
+    for i in range(len(Constants.MATRIX)):
+        for j in range(len(Constants.MATRIX[i])):
+            if Constants.MATRIX[i][j] == 'g':
                 coors.append((j-Constants.ARENA_COL/2, i-Constants.ARENA_ROW/2,))
 
     for x, z in coors:
@@ -82,9 +82,9 @@ def genLavaXML():
     # <DrawBlock x="0" y="206" z="0" type="lava" />
     xml = ""
     
-    for i in range(len(MATRIX)):
-        for j in range(len(MATRIX[i])):
-            if MATRIX[i][j] == 'l':
+    for i in range(len(Constants.MATRIX)):
+        for j in range(len(Constants.MATRIX[i])):
+            if Constants.MATRIX[i][j] == 'l':
                 xml += '''<DrawBlock x="''' + str(j-Constants.ARENA_COL/2) + '''" y="206" z="''' + str(i-Constants.ARENA_ROW/2) + '''" type="lava"/>'''
 
     
@@ -120,10 +120,10 @@ def print_task_parameters():
     print 'ARENA_COL:', ARENA_COL,
     print 'ARENA_ROW:', ARENA_ROW
 
-def print_matrix():
-    print '|' + '|'.join(str(i%10) for i in range(1, ARENA_COL+1))
-    for j in range(len(MATRIX)):
-        print '|'+'|'.join(c for c in MATRIX[j])+'|' + str((j+1)%10)
+# def print_matrix():
+#     print '|' + '|'.join(str(i%10) for i in range(1, ARENA_COL+1))
+#     for j in range(len(Constants.MATRIX)):
+#         print '|'+'|'.join(c for c in Constants.MATRIX[j])+'|' + str((j+1)%10)
 
 
 
@@ -217,4 +217,5 @@ if __name__ == '__main__':
     # print_matrix()
     # print getMissionXML("TEST")
     readMapXML()
+    print helper.print_matrix(Constants.MATRIX)
 

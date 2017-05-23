@@ -7,10 +7,12 @@ import errno
 import math
 import Tkinter as tk
 from collections import namedtuple
-from ReadMap import *
+# from ReadMap import *
 import Constants
+from priodict import priorityDictionary
+from collections import defaultdict
 
-import Helper
+import helper
 
 
 
@@ -34,25 +36,116 @@ def decide_case(curr_state,n):
 			return 2/4
 	return 1
 
+def get_surrounding(state, map):
+	result = []
+	row, col = state
+	for drow in range(-1, 2):
+		for dcol in range(-1,2):
+			if (drow, dcol) == (0,0):
+				continue
+			if (row + drow) in range(0, len(map)) and\
+				(col + dcol) in range(0, len(map[0])):
+				result.append((row+drow, col+dcol))
+
+	return result
+
+
+def distance(a, b, map):
+	# return the distance between two states
+	# use for gScore
+	return max(abs(a[0]-b[0]), abs(a[1]-b[1]))
+
+def angle_between_state(a, b, map):
+
+	if a[1] == b[1]:
+		return (a[0]-b[0])*90.0
+	else:
+		return math.degrees(
+					math.atan(float(b[0]-a[0])/float(a[1]-b[1]))
+				)
+	
+
+
+def heuristic(state, goals, map, angle):
+	# return heuristic estimate from state to scores
+	# return float
+	if map[state[0]][state[1]] == 'l':
+		return float('inf')
+	else:
+		return min( distance(state, goal,map) for goal in goals)
+	
 
 
 #def a_star(start,goal):
-def a_star(start, map, previous_start, previous_policy, depth=2):
+def a_star(position,angle, map, previous_start, previous_policy, depth=2):
+	# start:(int, int),map:MATRIX, 
+	# goals:coordinates of all goals
+	#position of current position(start), and apple (goal)
+	
+	#TODO: 
+	#	Check if the action of start state has been calculated
+
+	start = (int(position[0]), int(position[1]))
+	if start in previous_policy:
+		at = previous_policy.index(start)
+		if at != len(previous_policy):
+			return angle_between_state(start, previous_policy[at+1])
+	else:
+		previous_policy = []
+	
+	goals = []
+	for i in range(len(map)):
+		for j in range(len(map[i])):
+			if map[i][j] == 'g':
+				goals.append((j, i))
 
 
-	# #position of current position(start), and apple (goal)
-	# open_list = []
-	# close_list = [goal]
-	# while(start not in close_list):
-	# 	curr = close_list[-1]
-	# 	# add positions arround curr that are not visited
-	# 	# calculate f values for new-added blocks
-	# 	# find the block m with min f (if same value, random)
-	# 	# remove m in open_list
-	# 	close_list.add(m)
-	# #find the angle of close_list
-	# return angle
-	return 0
+	unvisted = priorityDictionary(sort_by = lambda x: x[1])
+	unvisted[start] = 0
+	
+	gScores = defaultdict(lambda : float('inf')) # cost from start to state
+	fScores = defaultdict(None)  # ~cost from state to goal
+
+	pred = defaultdict(lambda : start)
+	visited = set()
+	gScores[start] = 0
+
+
+	for curr in unvisted:
+		visited.add(curr)
+		if curr in goals:
+			break
+
+		# add positions arround curr that are not visited
+		for sur in get_surrounding(curr, map):
+			if distance(sur, start,map) > depth:
+				continue
+			dist = distance(curr, sur,map)
+			
+			if sur in visited and\
+				 gScores[sur] < gScores[curr] + dist:
+				 continue
+			
+			# calculate f values for new-added blocks
+			if gScores[sur] > gScores[curr] + dist:
+
+				pred[sur] = curr
+				gScores[sur] = gScores[curr] + dist
+				fScores[sur] = heuristic(sur, goals, map, angle) + gScores[sur]
+				
+
+
+			if sur not in visited:
+				unvisted[sur] = fScores[sur]
+			
+
+	helper.print_dict(gScores, name='gScore')
+	helper.print_dict(fScores, name='fScore')
+		
+
+
+	#find the angle of close_list
+	return angle_between_state(start, (0,0), map)
 
 def main(case,curr_state,n):
 	#give case number return angle
@@ -65,3 +158,22 @@ def main(case,curr_state,n):
 		return toward_apple
 	else:
 		return a_star(curr_state,apple_position)
+
+
+
+if __name__ == '__main__':
+	from ReadMap import readMapTXT
+	
+	readMapTXT('map0.txt')
+	# from ReadMap import MATRIX
+	helper.print_matrix(Constants.MATRIX)
+
+	a_star((0,0), [(3, 8)], Constants.MATRIX,(0,0),(0,0),depth='inf')
+
+	for i in range(-1, 2):
+		# print (i,j), '-', (0,0), ':',
+		# print angle_between_state((0,0), (i,j), MATRIX)
+		print '|'+'|'.join('{:^10.2f}'.format(
+			angle_between_state((0,0), (i,j), Constants.MATRIX)) 
+				for j in range(-1, 2)
+				)+ '|'

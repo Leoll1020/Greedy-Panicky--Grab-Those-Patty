@@ -1,5 +1,7 @@
 #return a list with width*breadth size. Store state value
 import Constants
+import json
+# import MalmoPython
 def initializeTable(WIDTH,BREADTH):
 	table = []                                       
 	for i in range (0, WIDTH):       
@@ -26,12 +28,14 @@ def getTable(x,z):
 #find the locations of the certain objects
 #according to assignment2.py
 #can be replaced if there is a similar one 
-def object_position(object_type):
+def object_position(object_type, agent_host):
 	positions = []
+	# agent_host = MalmoPython.AgentHost()
 	while True:
 		world_state = agent_host.getWorldState()
 		msg = world_state.observations[-1].text
 		ob = json.loads(msg)
+		print ob
 		for i in ob[object_type]:
 			positions.append((i['x'],i['z']))
 		return positions
@@ -45,17 +49,19 @@ def calc_dis(ob_list,ob_pos):
 ###################################
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy, agent_position):
+def choosePolicy(a_start_policy, best_angle_policy, agent_position,agent_host):
 	#suppose here agent_position is (x,z) tuple of agent position
-	walls = object_position('lava')   #should change the name of the trap and mob
-	mobs = object_position(MOB_TYPE)
-	wall_to_agent = calc_dis(walls,agent_position)
-	w = min(wall_to_agent)
-	mob_to_agent = calc_dis(mobs,agent_position)
-	m = min(wall_to_agent)
-	_w = w/(w+m)
-	_m = m/(w+m)
-	return _w*a_start_policy+_m*best_angle_policy
+	# print agent_position
+	# walls = object_position('lava', agent_host)   #should change the name of the trap and mob
+	# mobs = object_position(MOB_TYPE, agent_host)
+	# wall_to_agent = calc_dis(walls,agent_position)
+	# w = min(wall_to_agent)
+	# mob_to_agent = calc_dis(mobs,agent_position)
+	# m = min(wall_to_agent)
+	# _w = w/(w+m)
+	# _m = m/(w+m)
+	# return _w*a_start_policy+_m*best_angle_policy
+	return best_angle_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
@@ -72,3 +78,17 @@ def findUs(entities):
             continue
         else:
             return ent
+
+
+def print_dict(dictionary, name = ''):
+	print 'name:', name
+	for key, val in dictionary.items():
+		print '\t',key, ':', val
+
+
+def print_matrix(matrix):
+    print '|' + '|'.join(str(i%10) for i in range(len(matrix)))
+    for j in range(len(matrix)):
+        print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
+
+

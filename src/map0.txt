@@ -1,8 +1,7 @@
 # SAMPLE MAP, # all text after # will be regarded as comments
 NUM_GOALS = 3
-GOAL_TYPE = "diamond"
-ARENA_COL = 15
-ARENA_ROW = 15
+ARENA_COL = 15 
+ARENA_ROW = 15 
 # lines with assignment will be executed and change the parameter of map
 # all the cells are seperated by '|'
 # NO '|' at the left side of the first cell of each row
