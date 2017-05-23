@@ -8,6 +8,7 @@ ARENA_ROW = 15 # number of rows
 MATRIX = []  # Map represented by 2d array
 
 
+# x = col = width, z = row = breadth
 
 # Display parameters:
 CANVAS_BORDER = 20
@@ -27,5 +28,8 @@ agent_mob_weight = -10
 agent_turn_weight = 0 # Negative values to penalise turning, positive to encourage.
 
 
+# 
+agent_host = None
+world_state= None
 
 AStar_Policy = []
