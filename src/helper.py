@@ -51,23 +51,44 @@ def calc_dis(ob_list,ob_pos):
 	for i in ob_list:
 		result.append((i[0]-ob_pos[0])**2+(i[1]-ob_pos[1])**2)
 	return result
+
+#find the positions of lava
+def findLava(map):
+	result = []
+	w = len(map)
+	if w != 0:
+		l = len(map[0])
+		for i in range(w):
+			for j in range(l):
+				if map[i][j]=='l':
+					result.append((i,j))
+	return result
+
+
+#find the positions of mobs
+def findmobs(entities):
+	result = []
+	for ent in entities:
+		if ent.name == Constants.MOB_TYPE:
+			result.append(positionTOstate(ent.x,ent.z))
+	return result
 ###################################
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy, agent_position):
+def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position):
 	#suppose here agent_position is (x,z) tuple of agent position
 	# print agent_position
-	# walls = object_position('lava')   #should change the name of the trap and mob
-	# mobs = object_position(MOB_TYPE)
-	# wall_to_agent = calc_dis(walls,agent_position)
-	# w = min(wall_to_agent)
-	# mob_to_agent = calc_dis(mobs,agent_position)
-	# m = min(wall_to_agent)
-	# _w = w/(w+m)
-	# _m = m/(w+m)
-	# return _w*a_start_policy+_m*best_angle_policy
+	walls = findLava(map)   
+	mobs = findmobs(entities)
+	wall_to_agent = calc_dis(walls,agent_position)
+	w = min(wall_to_agent)
+	mob_to_agent = calc_dis(mobs,agent_position)
+	m = min(wall_to_agent)
+	_w = w/(w+m)
+	_m = m/(w+m)
+	return _w*a_start_policy+_m*best_angle_policy
 	# return best_angle_policy
-	return a_start_policy
+	#return a_start_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
