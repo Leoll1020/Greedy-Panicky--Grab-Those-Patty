@@ -1,6 +1,5 @@
 ---
 layout: default
-title:  Name
 ---
 
 # Team Name: Mr.Panicky's Trainers
