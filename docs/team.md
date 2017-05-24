@@ -1,16 +1,13 @@
 ---
 layout: default
-title:  Team
+title:  Name
 ---
 
-# {{ page.title }}
+## Team Name: Mr.Panicky's Trainers
 
-
-## USER 1
+## Team Members:
 ***Chen Lu***: clu10
 
-## USER 2
 ***Jenny Zhang***: xiyuez
 
-## USER 3
 ***Yiqiao Zhao***: yiqiaoz1
