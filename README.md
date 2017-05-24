@@ -1,2 +1,2 @@
-# Minecraft-AI-Enemy-Dodging
-This Python project achieves automatically enemy (Creeper) dodging by reinforcement learning based on Malmo framework. Based on performance, we are seeking to extend its feature by dodging player agents based on dynamic distance/time calculation.
+# Greedy-Panicky-Grab-Those-Patty
+An AI project for Minecraft[1.8] game. The agent is trained to collect apples, escaping from pursuing enemies, and avoiding lava blocks all at the same time. Based on A-Star algorithm and Malmo framework.
