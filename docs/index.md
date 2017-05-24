@@ -3,7 +3,7 @@ layout: default
 title:  Home
 ---
 
-## Minecraft-AI-Enemy-Dodging
+## Greedy-Panicky--Grab-Those-Patty
 
 #### Index of all documentations ####
 
