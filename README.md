@@ -19,7 +19,6 @@ Actual game UI:
 ## Links
 Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
 
-
 Video: Placeholder
 
 
