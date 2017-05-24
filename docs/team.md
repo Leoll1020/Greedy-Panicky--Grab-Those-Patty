@@ -1,9 +1,9 @@
 ---
 layout: default
-title:  Team Name: Mr.Panicky's Trainers
+title:  Name
 ---
 
-# {{ page.title }}
+# Team Name: Mr.Panicky's Trainers
 
 ## Team Members:
 ***Chen Lu***: clu10
