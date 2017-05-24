@@ -8,7 +8,7 @@ Mr.Panicky loves eating apple but he is afraid of bugs. One day, he stole some a
 Designed and implemented an AI agent whose objective is collecting positive rewards (apples) while doging negative rewards (endermites and lava).
 
 ## Approach
-Applied A-Star searching algorithm to collect positive rewards based on current position and expected costs (steps) to goals; Utilized dynamic angle-distance algorithm (provided in mob_fun.py by Malmo) to avoid pursing enemies; Then balanced two policies' output by a voting function taking lava position into account.
+Applied A-Star searching algorithm to collect positive rewards (apples) and dodge negative rewards (lava) based on current position and expected costs (steps) to goals; Utilized dynamic angle-distance algorithm (provided in mob_fun.py by Malmo) to pursue positive rewards (also apples) and dodge negative rewards (endermites); Then balanced two policies' output by a voting function.
 
 ## Game Screenshot
 Game board layout (green: agent, blue: apples, red: endermites):
@@ -20,9 +20,6 @@ Actual game UI:
 Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
 
 Video: Placeholder
-
-
-
 
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
