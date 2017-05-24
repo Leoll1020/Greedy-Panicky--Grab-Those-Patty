@@ -11,16 +11,22 @@ Designed and implemented an AI agent whose objective is collecting positive rewa
 Applied A-Star searching algorithm to collect positive rewards based on current position and expected costs (steps) to goals; Utilized dynamic angle-distance algorithm (provided in mob_fun.py by Malmo) to avoid pursing enemies; Then balanced two policies' output by a voting function taking lava position into account.
 
 ## Game Screenshot
-
+__
+__
+__
+__
+Game board layout (green: agent, blue: apples, red: endermites):
 ![Screenshot](game_board.png)
-Game board layout (green: agent, blue: apples, red: endermites)
-
-
+__
+__
+__
+__
+Actual game UI:
 ![Screenshot](game_layout.png)
-Actual game UI
+
 
 ## Links
-Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
+Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/__
 Video: Placeholder
 
 
