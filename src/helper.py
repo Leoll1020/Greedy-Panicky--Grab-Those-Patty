@@ -78,6 +78,7 @@ def findmobs(entities):
 def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position):
 	#suppose here agent_position is (x,z) tuple of agent position
 	# print agent_position
+	print 'Astar', a_start_policy, 'Stand', best_angle_policy,
 	walls = findLava(map)   
 	mobs = findmobs(entities)
 	wall_to_agent = calc_dis(walls,agent_position)
@@ -88,7 +89,7 @@ def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position)
 	_m = m/(w+m)
 	return _w*a_start_policy+_m*best_angle_policy
 	# return best_angle_policy
-	#return a_start_policy
+	# return a_start_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):

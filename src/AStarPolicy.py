@@ -50,11 +50,6 @@ def get_surrounding(state, map):
 	return result
 
 
-def distance(a, b, map):
-	# return the distance between two states
-	# use for gScore
-	return max(abs(a[0]-b[0]), abs(a[1]-b[1]))
-
 def angle_between_state(a, b, map):
 	'''
 	|  135.00  |  180.00  |  225.00  |
@@ -94,15 +89,24 @@ def angle_between_position(p1, p2):
 				) + c
 
 
+def distance(a, b,angle, map):
+	# return the distance between two states
+	# use for gScore
+	return max(abs(a[0]-b[0]), abs(a[1]-b[1])) +\
+			 abs(angle_between_state(a, b, map) - angle) / 360
+
 def heuristic(state, goals, map, angle):
 	# return heuristic estimate from state to scores
 	# return float
 	if map[state[0]][state[1]] == 'l':
 		return float('inf')
-	if map[state[0]][state[1]] == 'g':
+	for sur in get_surrounding(state, map):
+		if map[sur[0]][sur[1]] == 'l':
+			return 50000
+	if state in goals:
 		return -100.0
 	else:
-		return min( distance(state, goal,map) for goal in goals)
+		return min( distance(state, goal, angle,map) for goal in goals)
 	
 def retreive_path(start, dest, pred):
 	path = [dest]
@@ -143,6 +147,8 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 		at = previous_policy.index(start)
 		if at != len(previous_policy):
 			previous_policy = previous_policy[at:]
+			print 'previous policy:', previous_policy
+			print 'next step', start, 'to', previous_policy[1]
 			return angle_between_position(position, 
 					helper.stateTOposition(*previous_policy[1]))
 	else:
@@ -162,24 +168,26 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 
 	for curr in unvisted:
 		visited.add(curr)
-		if curr in goals_states:
-			previous_policy = retreive_path(start, curr, pred)
+		# fScores[curr] = heuristic(curr, goals_states, map, angle) + gScores[curr]
+		# if curr in goals_states:
 			
-			break
+			
+		# 	break
 
 		# add positions arround curr that are not visited
 		for sur in get_surrounding(curr, map):
-			if distance(sur, start,map) > depth:
+			if distance(sur, start, angle, map) > depth:
 				continue
-			dist = distance(curr, sur,map)
+			dist = distance(curr, sur, angle, map)
 			
 			if sur in visited and\
 				 gScores[sur] < gScores[curr] + dist:
 				 continue
 			
 			# calculate f values for new-added blocks
-			if gScores[sur] > gScores[curr] + dist:
-
+			# if gScores[sur]+heuristic(sur, goals_states, map, angle) > \
+			# 	gScores[curr]+heuristic(curr, goals_states, map, angle):
+			else:
 				pred[sur] = curr
 				gScores[sur] = gScores[curr] + dist
 				fScores[sur] = heuristic(sur, goals_states, map, angle) + gScores[sur]
@@ -194,11 +202,22 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 	# helper.print_dict(fScores, name='fScore')
 		
 
-	next_block = previous_policy[1]
-	#find the angle of close_list
-	# return 360
 
-	print start, 'to', curr, ':', previous_policy
+	#find the angle of close_list
+	dest = start
+	minF = float('inf')
+	for state, f in fScores.items():
+		if f < minF and state != start:
+			minF = f
+			dest = state
+
+
+	previous_policy = retreive_path(start, dest, pred)
+
+	next_block = previous_policy[1]
+
+
+	print 'facing', angle, start, 'to', previous_policy[-1], ':', previous_policy
 	print 'next step', start, 'to', next_block, '==', position, 'to', helper.stateTOposition(*next_block)
 	return angle_between_position(position, 
 			helper.stateTOposition(*next_block))
