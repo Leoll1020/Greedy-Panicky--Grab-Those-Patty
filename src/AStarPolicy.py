@@ -93,11 +93,12 @@ def distance(a, b,angle, map):
 	# return the distance between two states
 	# use for gScore
 	return max(abs(a[0]-b[0]), abs(a[1]-b[1])) +\
-			 abs(angle_between_state(a, b, map) - angle) / 360
+			 0.5 *(abs(angle_between_state(a, b, map) - angle) / 360)
 
 def heuristic(state, goals, map, angle):
 	# return heuristic estimate from state to scores
 	# return float
+	lavas = helper.findLava(map)
 	if map[state[0]][state[1]] == 'l':
 		return float('inf')
 	for sur in get_surrounding(state, map):
@@ -106,7 +107,12 @@ def heuristic(state, goals, map, angle):
 	if state in goals:
 		return -100.0
 	else:
-		return min( distance(state, goal, angle,map) for goal in goals)
+		try:
+			return min( distance(state, goal, angle,map) for goal in goals) +\
+				min(distance(state, lava, angle, map) for lava in lavas)
+		except ValueError:
+			print 'goals', goals
+			return min(distance(state, lava, angle, map) for lava in lavas)
 	
 def retreive_path(start, dest, pred):
 	path = [dest]
