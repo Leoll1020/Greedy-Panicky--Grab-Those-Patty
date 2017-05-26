@@ -75,7 +75,7 @@ def findmobs(entities):
 ###################################
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position):
+def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,a=1):
 	#suppose here agent_position is (x,z) tuple of agent position
 	# print agent_position
 	walls = findLava(map)   
@@ -84,8 +84,8 @@ def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position)
 	w = min(wall_to_agent)
 	mob_to_agent = calc_dis(mobs,agent_position)
 	m = min(wall_to_agent)
-	_w = w/(w+m)
-	_m = m/(w+m)
+	_w = a*(m/(w+m))
+	_m = 1-_w
 	return _w*a_start_policy+_m*best_angle_policy
 	# return best_angle_policy
 	#return a_start_policy
