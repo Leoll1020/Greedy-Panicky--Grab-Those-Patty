@@ -25,7 +25,8 @@ EntityInfo.__new__.__defaults__ = (0, 0, 0, 0, 0, "", "", "", 1)
 import AStarPolicy
 import StandardPolicy
 import helper
-mapfile = 'map0.txt'
+mapfiles = ['map0.txt', 'map1.txt', 'map2.txt',
+            'map3.txt', 'map4.txt']
 
 recordingsDirectory="FleeRecordings"
 try:
@@ -102,7 +103,7 @@ if Constants.agent_host.receivedArgument("help"):
 if 'test' in sys.argv:
     num_reps = 1
 else:
-    num_reps = 30000
+    num_reps = 20
 
 current_yaw = 0
 best_yaw = 0
@@ -111,7 +112,10 @@ current_life = 0
 for iRepeat in range(num_reps):
     # mission_xml = getMissionXML(MOB_TYPE + " Apocalypse #" + str(iRepeat))
     #mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
-    mission_xml = readMapXML(filename = os.path.join(os.path.dirname(__file__), mapfile), mode=Constants.mode)   #If Mac
+    mission_xml = readMapXML(
+        filename = os.path.join(os.path.dirname(__file__), 
+        mapfiles[iRepeat % len(mapfiles)]), 
+        mode=Constants.mode)   #If Mac
     
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
     max_retries = 3
@@ -214,4 +218,17 @@ for iRepeat in range(num_reps):
         total_reward += Constants.world_state.rewards[-1].getValue()
 
     print "We stayed alive for " + str(total_commands) + " commands, and scored " + str(total_reward)
-    time.sleep(1) # Give the mod a little time to prepare for the next mission.
+    Constants.summary.append((total_reward, total_commands))
+    time.sleep(2) # Give the mod a little time to prepare for the next mission.
+
+sum_reward = 0
+sum_command = 0
+for tReward, tCommands in Constants.summary:
+    sum_reward += tReward
+    sum_command += tCommands
+
+print Constants.summary
+
+print '=================================='
+print 'Summary: average reward: {:10.4f}, average command:{:10.4f}'.format(
+                sum_reward / num_reps, sum_command/ num_reps)
