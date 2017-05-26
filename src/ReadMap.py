@@ -21,6 +21,7 @@ def readMapTXT(filename):
     try:
     
         with open(filename,'r') as file:
+            Constants.MATRIX = []
             for line in file:
                 if '=' in line:
                     # exec(line, globals())

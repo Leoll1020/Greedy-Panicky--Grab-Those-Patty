@@ -71,7 +71,7 @@ root.wm_title("Collecting apples, avoiding lava and doging enemies!")
 
 
 
-canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH, height=Constants.CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="white")
+canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH+30, height=Constants.CANVAS_HEIGHT+30, borderwidth=0, highlightthickness=0, bg="white")
 canvas.pack()
 root.update()
 
@@ -111,7 +111,7 @@ current_life = 0
 for iRepeat in range(num_reps):
     # mission_xml = getMissionXML(MOB_TYPE + " Apocalypse #" + str(iRepeat))
     #mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
-    mission_xml = readMapXML(filename = os.path.join(os.path.dirname(__file__), mapfile), mode='Creative')   #If Mac
+    mission_xml = readMapXML(filename = os.path.join(os.path.dirname(__file__), mapfile), mode=Constants.mode)   #If Mac
     
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
     max_retries = 3
@@ -181,7 +181,7 @@ for iRepeat in range(num_reps):
 
                 #Everyone vote!
                 a_star_policy=AStarPolicy.a_star((me.x,me.z), current_yaw, Constants.MATRIX, 
-                                    previous_start, Constants.AStar_Policy)
+                                    previous_start, Constants.AStar_Policy, depth=6)
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
                 best_yaw=helper.choosePolicy(a_star_policy, standard_policy,Constants.MATRIX,entities,(me.x, me.z))
                 

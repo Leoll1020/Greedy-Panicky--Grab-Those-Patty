@@ -51,6 +51,7 @@ def calc_dis(ob_list,ob_pos):
 	for i in ob_list:
 		result.append((i[0]-ob_pos[0])**2+(i[1]-ob_pos[1])**2)
 	return result
+###################################
 
 #find the positions of lava
 def findLava(map):
@@ -72,12 +73,12 @@ def findmobs(entities):
 		if ent.name == Constants.MOB_TYPE:
 			result.append(positionTOstate(ent.x,ent.z))
 	return result
-###################################
 
 #Given A* and bestAngle policy (an angle), return the combined output
 def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,a=1):
 	#suppose here agent_position is (x,z) tuple of agent position
 	# print agent_position
+	print 'Astar', a_start_policy, 'Stand', best_angle_policy,
 	walls = findLava(map)   
 	mobs = findmobs(entities)
 	wall_to_agent = calc_dis(walls,agent_position)
@@ -88,7 +89,7 @@ def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,
 	_m = 1-_w
 	return _w*a_start_policy+_m*best_angle_policy
 	# return best_angle_policy
-	#return a_start_policy
+	# return a_start_policy
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
@@ -106,14 +107,13 @@ def stateTOposition(row, col):
 
 #from all entities find the agent
 def findUs(entities):
-	#print(entities)
-	for ent in entities:
-		if ent.name == Constants.MOB_TYPE:
-			continue
-		elif ent.name == Constants.GOAL_TYPE:
-			continue
-		else:
-			return ent
+    for ent in entities:
+        if ent.name == Constants.MOB_TYPE:
+            continue
+        elif ent.name == Constants.GOAL_TYPE:
+            continue
+        else:
+            return ent
 
 
 def print_dict(dictionary, name = ''):
@@ -123,8 +123,8 @@ def print_dict(dictionary, name = ''):
 
 
 def print_matrix(matrix):
-	print '|' + '|'.join(str(i%10) for i in range(len(matrix)))
-	for j in range(len(matrix)):
-		print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
+    print '|' + '|'.join(str(i%10) for i in range(len(matrix)))
+    for j in range(len(matrix)):
+        print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
 
 

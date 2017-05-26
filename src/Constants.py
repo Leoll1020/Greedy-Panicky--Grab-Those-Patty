@@ -20,6 +20,7 @@ CANVAS_ORGX = -ARENA_COL/CANVAS_SCALEX
 CANVAS_ORGY = -ARENA_ROW/CANVAS_SCALEY
 
 # Agent parameters:
+mode = 'Survival'
 agent_stepsize = 1
 agent_search_resolution = 30 # Smaller values make computation faster, which seems to offset any benefit from the higher resolution.
 agent_goal_weight = 100
