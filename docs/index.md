@@ -30,12 +30,14 @@ Video: Placeholder
 
 - [team][team ref]. List of all team members.
 - [proposal][proposal ref]. The proposal for the project, include summary of the project and evaluation plan.
+- [status][status ref]. Status report for the project.
 
 
 
 [quickref]: https://github.com/mundimark/quickrefs/blob/master/HTML.md
 [proposal ref]: proposal.html
 [team ref]: team.html
+[status ref]: satus.html
 
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
