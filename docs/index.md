@@ -30,7 +30,7 @@ Video: Placeholder
 
 
 
-
+- [repo][repo ref]. Including all source code and documentary.
 - [proposal][proposal ref]. The proposal for the project, include summary of the project and evaluation plan.
 - [status][status ref]. Status report for the project.
 - [team][team ref]. List of all team members.
@@ -40,6 +40,7 @@ Video: Placeholder
 [proposal ref]: proposal.html
 [status ref]: satus.html
 [team ref]: team.html
+[repo ref]: https://github.com/Leoll1020/Greedy-Panicky--Grab-Those-Patty
 
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
