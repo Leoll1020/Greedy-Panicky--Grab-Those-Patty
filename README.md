@@ -13,6 +13,9 @@ Applied A-Star searching algorithm to collect positive rewards (apples) and dodg
 ## Game Screenshot
 Game board layout (green: agent, blue: apples, red: endermites):
 ![Screenshot](docs/game_board.png)
+
+
+
 Actual game UI:
 ![Screenshot](docs/game_layout.png)
 
