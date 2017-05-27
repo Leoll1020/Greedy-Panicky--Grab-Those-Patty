@@ -18,7 +18,7 @@ For the combination algorithm, we compute the weight for both angles to get the 
 
 ## Evaluation:
 
-![Screenshot](docs/Evaluation table.png)
+![Screenshot](docs/Evaluation_table.png)
 
 The performance of policy will is evaluated based on the number of command it survives(it gets a new command for every 0.02 second) and the rewards of this mission. The following chart includes the average performance of the corresponding policy: A star algorithm with various depth and combination of both algorithm with various weight. 
  
