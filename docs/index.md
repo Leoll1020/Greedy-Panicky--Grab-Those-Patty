@@ -30,12 +30,13 @@ Video: Placeholder
 
 
 
+- [video][video ref]. Video walk-through of this project.
 - [repo][repo ref]. Including all source code and documentary.
 - [proposal][proposal ref]. The proposal for the project, include summary of the project and evaluation plan.
 - [status][status ref]. Status report for the project.
 - [team][team ref]. List of all team members.
 
-
+[video ref]: https://www.youtube.com/watch?v=h-qSJNtnlz0
 [quickref]: https://github.com/mundimark/quickrefs/blob/master/HTML.md
 [proposal ref]: proposal.html
 [status ref]: satus.html
