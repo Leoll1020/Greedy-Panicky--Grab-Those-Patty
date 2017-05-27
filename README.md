@@ -20,7 +20,7 @@ Actual game UI:
 ![Screenshot](docs/game_layout.png)
 
 ## Links
-Video: Placeholder
+Video: https://m.youtube.com/watch?feature=youtu.be&v=h-qSJNtnlz0
 
 Github Repo: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
 
