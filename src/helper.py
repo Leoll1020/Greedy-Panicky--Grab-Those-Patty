@@ -48,8 +48,9 @@ def object_position(object_type):
 #given a list of objects and the position of the agent, return a list of distance^2
 def calc_dis(ob_list,ob_pos):
 	result = []
+	#ob_pos_ind=positionTOstate(ob_pos[0],ob_pos[1])
 	for i in ob_list:
-		#result.append((i[0]*Constants.CANVAS_SCALEX-ob_pos[0])**2+(i[1]*Constants.CANVAS_SCALEY-ob_pos[1])**2)
+		#result.append((i[0]-ob_pos_ind[0])**2+(i[1]-ob_pos_ind[1])**2)
 		result.append((i[0]-ob_pos[0])**2+(i[1]-ob_pos[1])**2)
 	return result
 ###################################
@@ -63,7 +64,8 @@ def findLava(map):
 		for i in range(w):
 			for j in range(l):
 				if map[i][j]=='l':
-					result.append((i*Constants.CANVAS_SCALEX,j*Constants.CANVAS_SCALEY))
+					#result.append((i,j))
+					result.append((stateTOposition(i,j)))
 	return result
 
 
@@ -72,31 +74,33 @@ def findmobs(entities):
 	result = []
 	for ent in entities:
 		if ent.name == Constants.MOB_TYPE:
-			result.append(positionTOstate(ent.x,ent.z))
+			#result.append(positionTOstate(ent.x,ent.z))
+			result.append((ent.x,ent.z))
 	return result
 
 #Given A* and bestAngle policy (an angle), return the combined output
 def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,a=1):
 	#suppose here agent_position is (x,z) tuple of agent position
-	print("Agent Position ",agent_position,"\n")
-	print 'Astar', a_start_policy, 'Stand', best_angle_policy,
+	print " \nChoosing policy:"
+	print '[Step 1] Raw Astar angle: ', a_start_policy, ' Raw Standard angle: ', best_angle_policy
 	walls = findLava(map)   
 	mobs = findmobs(entities)
 	wall_to_agent = calc_dis(walls,agent_position)
 	w = min(wall_to_agent)
-	print("Dis to Fucking Lava: ",w,"\n")
 	mob_to_agent = calc_dis(mobs,agent_position)
 	if (mobs==[]):
 		m=0
 	else:
 		m = min(mob_to_agent)
-	#m = min(wall_to_agent)
-	#print("Dis to mob: ",m)
-	_w = a*(m/(w+m))
+	try:
+		_w = a*(float(m)/float(w+m))
+	except: #If no mob and in lava -> already dead. _w set to anything
+		_w=1
 	_m = 1-_w
-	#print("A_star: ",_w," best_angle: ",_m)
+	print "[Step 2] Lava distance: ",w," Mob distance: ",m
+	print "[Step 3] Lava (a_star) policy weight: ",_w," Mob (standard) policy weight: ",_m
+	print "[Conclusion] Final policy (angle): ",_w*a_start_policy+_m*best_angle_policy,"\n"
 	return _w*a_start_policy+_m*best_angle_policy
-
 	# return best_angle_policy
 	#return a_start_policy
 

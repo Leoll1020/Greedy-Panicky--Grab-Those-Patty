@@ -224,10 +224,6 @@ for iRepeat in range(num_reps):
 
 
     # mission has ended.
-    print("============")
-    print(Constants.MATRIX)
-    print(helper.findUs(entities))
-    print("============")
     for error in Constants.world_state.errors:
         print "Error:",error.text
     if Constants.world_state.number_of_rewards_since_last_state > 0:
