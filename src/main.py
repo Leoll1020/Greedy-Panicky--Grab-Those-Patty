@@ -111,10 +111,19 @@ current_life = 0
 
 for iRepeat in range(num_reps):
     # mission_xml = getMissionXML(MOB_TYPE + " Apocalypse #" + str(iRepeat))
-    #mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
+    # mission_xml = readMapXML(filename = os.path.dirname(__file__) + '/map0.txt', mode='Creative') #If Windows
+
+    # a is the preference constant between standard policy and a star policy
+    # a will be updated every run under same map
+    if iRepeat%(num_reps/len(mapfiles))==0:  #when start a new map
+        a=0.5
+        mob_damange=0
+        lava_damage=0
+
     mission_xml = readMapXML(
         filename = os.path.join(os.path.dirname(__file__), 
-        mapfiles[iRepeat % len(mapfiles)]), 
+        #mapfiles[iRepeat % len(mapfiles)]),    #If cross run
+        mapfiles[iRepeat/(num_reps/len(mapfiles))]), #If not cross run
         mode=Constants.mode)   #If Mac
     
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
@@ -159,12 +168,16 @@ for iRepeat in range(num_reps):
         if Constants.world_state.number_of_observations_since_last_state > 0:
             msg = Constants.world_state.observations[-1].text
             ob = json.loads(msg)
+            
+            #print(ob)
+           
             if "Yaw" in ob:
                 current_yaw = ob[u'Yaw']
             if "Life" in ob:
                 life = ob[u'Life']
                 if life < current_life:
                     Constants.agent_host.sendCommand("chat aaaaaaaaargh!!!")
+
                     flash = True
                 current_life = life
             if "entities" in ob:
@@ -211,6 +224,10 @@ for iRepeat in range(num_reps):
 
 
     # mission has ended.
+    print("============")
+    print(Constants.MATRIX)
+    print(helper.findUs(entities))
+    print("============")
     for error in Constants.world_state.errors:
         print "Error:",error.text
     if Constants.world_state.number_of_rewards_since_last_state > 0:

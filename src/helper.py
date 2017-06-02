@@ -49,6 +49,7 @@ def object_position(object_type):
 def calc_dis(ob_list,ob_pos):
 	result = []
 	for i in ob_list:
+		#result.append((i[0]*Constants.CANVAS_SCALEX-ob_pos[0])**2+(i[1]*Constants.CANVAS_SCALEY-ob_pos[1])**2)
 		result.append((i[0]-ob_pos[0])**2+(i[1]-ob_pos[1])**2)
 	return result
 ###################################
@@ -62,7 +63,7 @@ def findLava(map):
 		for i in range(w):
 			for j in range(l):
 				if map[i][j]=='l':
-					result.append((i,j))
+					result.append((i*Constants.CANVAS_SCALEX,j*Constants.CANVAS_SCALEY))
 	return result
 
 
@@ -77,13 +78,13 @@ def findmobs(entities):
 #Given A* and bestAngle policy (an angle), return the combined output
 def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,a=1):
 	#suppose here agent_position is (x,z) tuple of agent position
-
+	print("Agent Position ",agent_position,"\n")
 	print 'Astar', a_start_policy, 'Stand', best_angle_policy,
 	walls = findLava(map)   
 	mobs = findmobs(entities)
 	wall_to_agent = calc_dis(walls,agent_position)
 	w = min(wall_to_agent)
-	#print("Dis to wall: ",w)
+	print("Dis to Fucking Lava: ",w,"\n")
 	mob_to_agent = calc_dis(mobs,agent_position)
 	if (mobs==[]):
 		m=0
