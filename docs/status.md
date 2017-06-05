@@ -4,7 +4,7 @@ title: Status
 ---
 # Greedy-Panicky--Grab-Those-Patty Status Report
 ## Project Summary:  
-The agent, Mr. Panicky, loves apple and afraid of bugs. After being drop into a place surrounded by his favorite apples, scary lethal endermite and hot lava, his goal is to gather as much apples without being killed by endermite or falling into lava. The goal of the project is to build an algorithm that will help Mr. Panicky to survive in a random generated map as long as possible while collecting apples. 
+The agent, Mr. Panicky, loves apple and afraid of bugs. After being drop into a place surrounded by his favorite apples, scary lethal endermite and hot lava, his goal is to gather as much apples without being killed by endermite or falling into lava. The goal of the project is to build an algorithm that will help Mr. Panicky to survive in a random generated map as long as possible while collecting apples. [Video Click Here][video ref]
  
  
 ## Approach:  
@@ -32,4 +32,4 @@ For the purpose of testing and evaluation process, the program builds map based 
  
 The weighted average with unified parameter is not flexible enough to advance the performance. Instead, it actually causes the performance to decrease. We think that the reason is that in some cases, one algorithm should be weighted more while in the other cases, it is another way around, and the both cases can occur within the same map. We want to use reinforcement learning to make it more intelligent and therefore boost the performance of the algorithm. Also, we can set and evaluation the policy based on different parameters instead of just depth for A* and a for combination function. 
  
-
+[video ref]: https://www.youtube.com/watch?v=h-qSJNtnlz0

@@ -111,7 +111,7 @@ def heuristic(state, goals, map, angle):
 			return min( distance(state, goal, angle,map) for goal in goals) +\
 				min(distance(state, lava, angle, map) for lava in lavas)
 		except ValueError:
-			print 'goals', goals
+			#print 'goals', goals
 			return min(distance(state, lava, angle, map) for lava in lavas)
 	
 def retreive_path(start, dest, pred):
