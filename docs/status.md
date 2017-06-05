@@ -18,12 +18,9 @@ For the combination algorithm, we compute the weight for both angles to get the 
 
 ## Evaluation:
 
-![Screenshot](evaluation_table.png)
-
-The performance of policy will is evaluated based on the number of command it survives(it gets a new command for every 0.02 second) and the rewards of this mission. The following chart includes the average performance of the corresponding policy: A star algorithm with various depth and combination of both algorithm with various weight. 
- 
-For qualitative evaluation, see the video demo of project, starting from 2:04. There are several examples of agents changing its direction as the endermite approaches or as it is getting close to lava.
-
+| Method | Map0 score/steps | Map1 score/steps | Map2 score/steps | Map3 score/steps | Map4 score/steps | All avg score/steps|
+| ------ | ---------------- | ---------------- | ---------------- | ---------------- | ---------------- | ------------------ |
+| A* depth =2 |        d    |         Text C1  |         Text C1  |         Text C1  |         Text C1  |         Text C1    |
 
 
 

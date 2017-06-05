@@ -13,7 +13,7 @@ Mr.Panicky loves eating apple but he is afraid of bugs. One day, he stole some a
 Designed and implemented an AI agent whose objective is collecting positive rewards (apples) while doging negative rewards (endermites and lava).
 
 ## Approach
-Applied A-Star searching algorithm to collect positive rewards (apples) and dodge negative rewards (lava) based on current position and expected costs (steps) to goals; Utilized dynamic angle-distance algorithm (provided in mob_fun.py by Malmo) to pursue positive rewards (also apples) and dodge negative rewards (endermites); Then balanced two policies' output by a voting function. For more details please refer to Status page.
+Applied A-Star searching algorithm to collect positive rewards (apples) and dodge negative rewards (lava) based on current position and expected costs (steps) to goals; Utilized dynamic angle-distance algorithm (provided in mob_fun.py by Malmo) to pursue positive rewards (also apples) and dodge negative rewards (endermites); Then balanced two policies' output by a voting function.
 
 ## Game Screenshot
 Game board layout (green: agent, blue: apples, red: endermites):
@@ -30,18 +30,16 @@ Video: Placeholder
 
 
 
-- [video][video ref]. Video walk-through of this project.
-- [repo][repo ref]. Including all source code and documentary.
+- [team][team ref]. List of all team members.
 - [proposal][proposal ref]. The proposal for the project, include summary of the project and evaluation plan.
 - [status][status ref]. Status report for the project.
-- [team][team ref]. List of all team members.
 
-[video ref]: https://www.youtube.com/watch?v=h-qSJNtnlz0
+
+
 [quickref]: https://github.com/mundimark/quickrefs/blob/master/HTML.md
 [proposal ref]: proposal.html
-[status ref]: satus.html
 [team ref]: team.html
-[repo ref]: https://github.com/Leoll1020/Greedy-Panicky--Grab-Those-Patty
+[status ref]: satus.html
 
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
