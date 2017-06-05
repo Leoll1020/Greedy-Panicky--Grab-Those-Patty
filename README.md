@@ -20,9 +20,11 @@ Actual game UI:
 ![Screenshot](docs/game_layout.png)
 
 ## Links
-Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
-
 Video: Placeholder
+
+Github Repo: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/
+
+Website: https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/index.html
 
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
