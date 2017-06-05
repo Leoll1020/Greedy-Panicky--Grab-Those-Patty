@@ -115,10 +115,12 @@ for iRepeat in range(num_reps):
 
     # a is the preference constant between standard policy and a star policy
     # a will be updated every run under same map
+    already_killed_by_lava=False
     if iRepeat%(num_reps/len(mapfiles))==0:  #when start a new map
         a=0.5
-        mob_damange=0
+        mob_damage=0
         lava_damage=0
+        
 
     mission_xml = readMapXML(
         filename = os.path.join(os.path.dirname(__file__), 
@@ -173,15 +175,16 @@ for iRepeat in range(num_reps):
            
             if "Yaw" in ob:
                 current_yaw = ob[u'Yaw']
+            entities = [EntityInfo(**k) for k in ob["entities"]]
             if "Life" in ob:
                 life = ob[u'Life']
                 if life < current_life:
                     Constants.agent_host.sendCommand("chat aaaaaaaaargh!!!")
-
+                    mob_damage=helper.update_mob_damage(mob_damage)
+                    lava_damage,already_killed_by_lava=helper.update_lava_damage(lava_damage,already_killed_by_lava,entities)
                     flash = True
                 current_life = life
             if "entities" in ob:
-                entities = [EntityInfo(**k) for k in ob["entities"]]
                 drawMobs(entities, flash)
                 drawGrids()
                 
@@ -200,7 +203,7 @@ for iRepeat in range(num_reps):
                 a_star_policy=AStarPolicy.a_star((me.x,me.z), current_yaw, Constants.MATRIX, 
                                     previous_start, Constants.AStar_Policy, depth=6)
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
-                best_yaw=helper.choosePolicy(a_star_policy, standard_policy,Constants.MATRIX,entities,(me.x, me.z))
+                best_yaw=helper.choosePolicy(a_star_policy, standard_policy,Constants.MATRIX,entities,(me.x, me.z), mob_damage,lava_damage)
                 
                 print 'best:', best_yaw
                 #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
@@ -210,6 +213,7 @@ for iRepeat in range(num_reps):
                 while difference > 180:
                     difference -= 360;
                 difference /= 180.0;
+                
                 
                 Constants.agent_host.sendCommand("turn " + str(difference))
                 total_commands += 1

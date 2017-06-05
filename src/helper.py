@@ -79,11 +79,11 @@ def findmobs(entities):
 	return result
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,a=1):
+def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position, mob_damage, lava_damage):
 	#suppose here agent_position is (x,z) tuple of agent position
 	print " \nChoosing policy:"
 	print '[Step 1] Raw Astar angle: ', a_start_policy, ' Raw Standard angle: ', best_angle_policy
-	walls = findLava(map)   
+	walls = findLava(map)  
 	mobs = findmobs(entities)
 	wall_to_agent = calc_dis(walls,agent_position)
 	w = min(wall_to_agent)
@@ -93,14 +93,22 @@ def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,
 	else:
 		m = min(mob_to_agent)
 	try:
-		_w = a*(float(m)/float(w+m))
+		_w = float(m)/float(w+m)
 	except: #If no mob and in lava -> already dead. _w set to anything
 		_w=1
-	_m = 1-_w
 	print "[Step 2] Lava distance: ",w," Mob distance: ",m
-	print "[Step 3] Lava (a_star) policy weight: ",_w," Mob (standard) policy weight: ",_m
-	print "[Conclusion] Final policy (angle): ",_w*a_start_policy+_m*best_angle_policy,"\n"
-	return _w*a_start_policy+_m*best_angle_policy
+	#Greater a value means prefer a_star more (lava aviodance)
+
+	if (lava_damage+mob_damage==0):
+		a=0.5
+	else:
+		a=float(lava_damage)/float(lava_damage+mob_damage)
+	print "[Step 3] a value (lava aviodance factor): ",a
+
+	print "[Step 4] Lava (a_star) policy weight: ",float(a)*float(_w)," Mob (standard) policy weight: ",float(1-a)*float(1-_w)
+	print "[Conclusion] Final policy (angle): ",(float(a)*float(_w)*a_start_policy+float(1-a)*float(1-_w)*best_angle_policy)/(float(a)*float(_w)+float(1-a)*float(1-_w)),"\n"
+	return (float(a)*float(_w)*a_start_policy+float(1-a)*float(1-_w)*best_angle_policy)/(float(a)*float(_w)+float(1-a)*float(1-_w))
+	#return 0
 	# return best_angle_policy
 	#return a_start_policy
 
@@ -140,4 +148,22 @@ def print_matrix(matrix):
     for j in range(len(matrix)):
         print '|'+'|'.join(c for c in matrix[j])+'|' + str((j)%10)
 
+def update_mob_damage(current_damage):
+	return current_damage+1
+
+def update_lava_damage(lava_damage,already_killed_by_lava,entities):
+	if (already_killed_by_lava):   #Already dead?
+		return (lava_damage, True)
+	else:
+		walls = findLava(Constants.MATRIX)
+		agent_position_raw=findUs(entities)
+		agent_position=(agent_position_raw.x,agent_position_raw.z) 
+		wall_to_agent = calc_dis(walls,agent_position)
+		w = min(wall_to_agent)
+		if (w<0.15):  #First time killed by lava
+			already_killed_by_lava=True
+			lava_damage=lava_damage+10
+			return (lava_damage,True)
+		else:		#Not killed by lava
+			return (lava_damage, False)
 
