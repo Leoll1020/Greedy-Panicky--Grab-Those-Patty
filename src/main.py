@@ -12,6 +12,7 @@ from collections import namedtuple
 from ReadMap import *
 import ReadMap
 import Constants
+import helper
 
 # Mac path problem is not resolved using the following fix
 # mapfile = 'map0.txt'
@@ -67,12 +68,26 @@ def drawGrids():
         canvas.create_line(0,space_width*x,Constants.CANVAS_WIDTH,space_width*x)
     root.update()
 
+########draw lava##########
+def drawLava(map):
+    space_width=Constants.CANVAS_WIDTH/float(Constants.ARENA_COL)
+    space_height=Constants.CANVAS_HEIGHT/float(Constants.ARENA_ROW)
+    lavas=helper.findLava(map)
+    print 'test'
+    print(lavas)
+    for i in lavas:
+        w = i[0]+6.5
+        h = i[1]+6.5
+        canvas.create_rectangle(w*space_width,h*space_height,(w+1)*space_width,(h+1)*space_height,fill='#551a8b')
+    root.update()
+
+            
 root = tk.Tk()
 root.wm_title("Collecting apples, avoiding lava and doging enemies!")
 
 
 
-canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH+30, height=Constants.CANVAS_HEIGHT+30, borderwidth=0, highlightthickness=0, bg="white")
+canvas = tk.Canvas(root, width=Constants.CANVAS_WIDTH, height=Constants.CANVAS_HEIGHT, borderwidth=0, highlightthickness=0, bg="white")
 canvas.pack()
 root.update()
 
@@ -186,6 +201,7 @@ for iRepeat in range(num_reps):
                 current_life = life
             if "entities" in ob:
                 drawMobs(entities, flash)
+                drawLava(Constants.MATRIX)
                 drawGrids()
                 
 
