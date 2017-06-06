@@ -73,8 +73,6 @@ def drawLava(map):
     space_width=Constants.CANVAS_WIDTH/float(Constants.ARENA_COL)
     space_height=Constants.CANVAS_HEIGHT/float(Constants.ARENA_ROW)
     lavas=helper.findLava(map)
-    print 'test'
-    print(lavas)
     for i in lavas:
         w = i[0]+6.5
         h = i[1]+6.5
