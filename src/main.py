@@ -9,8 +9,9 @@ import errno
 import math
 import Tkinter as tk
 from collections import namedtuple
-from ReadMap import *
+# from ReadMap import *
 import ReadMap
+import RandomMap
 import Constants
 import helper
 
@@ -26,8 +27,16 @@ EntityInfo.__new__.__defaults__ = (0, 0, 0, 0, 0, "", "", "", 1)
 import AStarPolicy
 import StandardPolicy
 import helper
+use_random_map = True # True to use random map, false to use mapfiles
 mapfiles = ['map0.txt', 'map1.txt', 'map2.txt',
             'map3.txt', 'map4.txt']
+
+num_reps = 20
+if use_random_map:
+    num_of_map = 5
+else:
+    num_of_map = len(mapfiles)
+
 
 recordingsDirectory="FleeRecordings"
 try:
@@ -117,8 +126,6 @@ if Constants.agent_host.receivedArgument("help"):
 # if Constants.agent_host.receivedArgument("test"):
 if 'test' in sys.argv:
     num_reps = 1
-else:
-    num_reps = 20
 
 current_yaw = 0
 best_yaw = 0
@@ -131,18 +138,22 @@ for iRepeat in range(num_reps):
     # a is the preference constant between standard policy and a star policy
     # a will be updated every run under same map
     already_killed_by_lava=False
-    if iRepeat%(num_reps/len(mapfiles))==0:  #when start a new map
+    if iRepeat%(num_reps/num_of_map)==0:  #when start a new map
         a=0.5
         mob_damage=0
         lava_damage=0
         
-
-    mission_xml = readMapXML(
-        filename = os.path.join(os.path.dirname(__file__), 
-        #mapfiles[iRepeat % len(mapfiles)]),    #If cross run
-        mapfiles[iRepeat/(num_reps/len(mapfiles))]), #If not cross run
-        mode=Constants.mode)   #If Mac
-    
+        if use_random_map:
+            
+            RandomMap.generate_Matrix()
+            mission_xml = RandomMap.randomMapXML(mode=Constants.mode)
+        else:
+            mission_xml = ReadMap.readMapXML(
+                filename = os.path.join(os.path.dirname(__file__), 
+                #mapfiles[iRepeat % len(mapfiles)]),    #If cross run
+                mapfiles[iRepeat/(num_reps/num_of_map)]), #If not cross run
+                mode=Constants.mode)   #If Mac
+    helper.print_matrix(Constants.MATRIX)
     my_mission = MalmoPython.MissionSpec(mission_xml,validate)
     max_retries = 3
     for retry in range(max_retries):
@@ -249,8 +260,9 @@ for iRepeat in range(num_reps):
     if Constants.world_state.number_of_rewards_since_last_state > 0:
         # A reward signal has come in - see what it is:
         total_reward += Constants.world_state.rewards[-1].getValue()
-
+    print '=================================='
     print "We stayed alive for " + str(total_commands) + " commands, and scored " + str(total_reward)
+    print '=================================='
     Constants.summary.append((total_reward, total_commands))
     time.sleep(2) # Give the mod a little time to prepare for the next mission.
 

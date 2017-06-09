@@ -36,7 +36,7 @@ def readMapTXT(filename):
                 Constants.MATRIX.append(row)
 
             assert len(Constants.MATRIX) == Constants.ARENA_ROW, 'Error in reading maps: arena breadth does not match the number of rows'
-        helper.print_matrix(Constants.MATRIX)
+        
 
     except IOError as e:
         print "Unable to find", filename 
