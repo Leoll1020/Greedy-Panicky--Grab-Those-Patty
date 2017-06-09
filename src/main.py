@@ -82,12 +82,10 @@ def drawLava(map):
     space_width=Constants.CANVAS_WIDTH/float(Constants.ARENA_COL)
     space_height=Constants.CANVAS_HEIGHT/float(Constants.ARENA_ROW)
     lavas=helper.findLava(map)
-    print 'test'
-    print(lavas)
     for i in lavas:
         w = i[0]+6.5
         h = i[1]+6.5
-        canvas.create_rectangle(w*space_width,h*space_height,(w+1)*space_width,(h+1)*space_height,fill='#551a8b')
+        canvas.create_rectangle(w*space_width,h*space_height,(w+1)*space_width,(h+1)*space_height,fill='#ffa500')
     root.update()
 
             
