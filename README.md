@@ -17,7 +17,7 @@ Game board layout (green: agent, blue: apples, red: endermites):
 
 Actual game UI:
 <br />
-<img src="docs/game_layout.png" height="480" width="640" alt=""> <br />
+<img src="docs/game_layout.png" height="480" width="720" alt=""> <br />
 
 
 ## Links
