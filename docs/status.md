@@ -6,7 +6,7 @@ title: Status
 ## Project Summary:  
 The agent, Mr. Panicky, loves apple and afraid of bugs. After being drop into a place surrounded by his favorite apples, scary lethal endermite and hot lava, his goal is to gather as much apples without being killed by endermite or falling into lava. The goal of the project is to build an algorithm that will help Mr. Panicky to survive in a random generated map as long as possible while collecting apples.
 
-<div><iframe width="640" height="480" src="https://www.youtube.com/embed/h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe></div>
+
  
  
 ## Approach:  
