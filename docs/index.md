@@ -6,6 +6,8 @@ title:  Home
 # Greedy-Panicky--Grab-Those-Patty
 An AI project for Minecraft[1.8] game. The agent is trained to collect apples, escaping from pursuing enemies, and avoiding lava blocks all at the same time. Based on A-Star algorithm and Malmo framework.
 
+<div><iframe width="640" height="480" src="https://www.youtube.com/embed/h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe></div>
+
 ## Background
 Mr.Panicky loves eating apple but he is afraid of bugs. One day, he stole some apples from his boss, Mr.Mean, and unfortunately, got caught. Mr.Mean then put him into a cube full of maneating endermite as a punishment. Luckily, he found he is not only surrounded by endermites, but also his favorite apples! Now starts Mr.Panicky's journey of surviving from endermites while collecting as many apples he can without falling into lava!
 
