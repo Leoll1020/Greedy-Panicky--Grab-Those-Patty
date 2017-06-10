@@ -20,9 +20,8 @@ For the combination algorithm, we compute the weight for both angles to get the 
 
 ## Evaluation:
 
-| Method | Map0 score/steps | Map1 score/steps | Map2 score/steps | Map3 score/steps | Map4 score/steps | All avg score/steps|
-| ------ | ---------------- | ---------------- | ---------------- | ---------------- | ---------------- | ------------------ |
-| A* depth =2 |        d    |         Text C1  |         Text C1  |         Text C1  |         Text C1  |         Text C1    |
+<br />
+<img src="evaluation_table.png" height="400" width="700" alt=""> <br />
 
 
 
