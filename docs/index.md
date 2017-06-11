@@ -11,8 +11,15 @@ An AI project for Minecraft[1.8] game. The agent is trained to collect apples, e
 </div>
 
 
-<iframe src="https://www.youtube.com/watch?v=h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/watch?v=h-qSJNtnlz0" width="1280" height="720" frameborder="0" allowfullscreen></iframe>
      
+<a href="https://github.com/Leoll1020/Greedy-Panicky--Grab-Those-Patty">Link to Source Code</a>
+
+
+[Project Video][video ref]
+
+<a href="https://leoll1020.github.io/Greedy-Panicky--Grab-Those-Patty/">Link to Project Website</a>
+
 <a href="https://github.com/Leoll1020/Greedy-Panicky--Grab-Those-Patty">Link to Source Code</a>
 
 ## Background
