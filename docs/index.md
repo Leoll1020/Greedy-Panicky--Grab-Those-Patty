@@ -53,6 +53,6 @@ Video: Placeholder
 [proposal ref]: proposal.html
 [team ref]: team.html
 [status ref]: satus.html
-
+[video ref]: https://www.youtube.com/watch?v=h-qSJNtnlz0
 
 Credits to Yiqiao Zhao, Chen Lu, Xiyue Zhang
