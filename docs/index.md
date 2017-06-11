@@ -8,7 +8,7 @@ An AI project for Minecraft[1.8] game. The agent is trained to collect apples, e
 
 <br />
 <div id="video_frame">
-  <iframe src="https://www.youtube.com/embed/v=h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe>
 </div>
 <br />
 
