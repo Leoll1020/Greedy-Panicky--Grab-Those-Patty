@@ -5,6 +5,8 @@ NUM_GOALS = 20
 GOAL_TYPE = "apple"
 ARENA_COL = 15   # number of columns
 ARENA_ROW = 15 # number of rows
+# ARENA_COL = 20   # number of columns
+# ARENA_ROW = 20 # number of rows
 MATRIX = []  # Map represented by 2d array
 
 
@@ -20,7 +22,8 @@ CANVAS_ORGX = -ARENA_COL/CANVAS_SCALEX
 CANVAS_ORGY = -ARENA_ROW/CANVAS_SCALEY
 
 # Agent parameters:
-mode = 'Survival'
+mode=  'Survival'
+# mode = 'Creative'
 agent_stepsize = 1
 agent_search_resolution = 30 # Smaller values make computation faster, which seems to offset any benefit from the higher resolution.
 agent_goal_weight = 100
@@ -34,4 +37,12 @@ agent_host = None
 world_state= None
 
 AStar_Policy = []
-summary = []
+
+# for hill climbing
+candidates = [0.1, 0.25, 0.5, 0.75,0.90]
+alpha = candidates[0]
+step = 0.1 # include directions
+
+
+# for recording surviving commands / rewards / alphs
+summary = dict()

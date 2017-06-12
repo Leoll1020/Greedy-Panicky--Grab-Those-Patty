@@ -93,7 +93,7 @@ def distance(a, b,angle, map):
 	# return the distance between two states
 	# use for gScore
 	return max(abs(a[0]-b[0]), abs(a[1]-b[1])) +\
-			 0.5 *(abs(angle_between_state(a, b, map) - angle) / 360)
+			 0.75 *(abs(angle_between_state(a, b, map) - angle) / 360)
 
 def heuristic(state, goals, map, angle):
 	# return heuristic estimate from state to scores
@@ -103,16 +103,16 @@ def heuristic(state, goals, map, angle):
 		return float('inf')
 	for sur in get_surrounding(state, map):
 		if map[sur[0]][sur[1]] == 'l':
-			return 50000
+			return 10000
 	if state in goals:
 		return -100.0
 	else:
 		try:
 			return min( distance(state, goal, angle,map) for goal in goals) +\
-				min(distance(state, lava, angle, map) for lava in lavas)
+				10000 - min(distance(state, lava, angle, map) for lava in lavas)
 		except ValueError:
 			#print 'goals', goals
-			return min(distance(state, lava, angle, map) for lava in lavas)
+			return 10000 - min(distance(state, lava, angle, map) for lava in lavas)
 	
 def retreive_path(start, dest, pred):
 	path = [dest]
@@ -184,7 +184,13 @@ def a_star(position,angle, map, previous_start, previous_policy, depth=float('in
 		for sur in get_surrounding(curr, map):
 			if distance(sur, start, angle, map) > depth:
 				continue
-			dist = distance(curr, sur, angle, map)
+
+			if curr == start:
+				dist = distance(curr, sur, angle, map)
+			else:
+				dist = distance(curr, sur, 
+				angle_between_state(pred[curr], curr, map),
+					map)
 			
 			if sur in visited and\
 				 gScores[sur] < gScores[curr] + dist:
