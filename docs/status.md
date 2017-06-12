@@ -4,7 +4,9 @@ title: Status
 ---
 # Greedy-Panicky--Grab-Those-Patty Status Report
 ## Project Summary:  
-The agent, Mr. Panicky, loves apple and afraid of bugs. After being drop into a place surrounded by his favorite apples, scary lethal endermite and hot lava, his goal is to gather as much apples without being killed by endermite or falling into lava. The goal of the project is to build an algorithm that will help Mr. Panicky to survive in a random generated map as long as possible while collecting apples. [Video Click Here][video ref]
+The agent, Mr. Panicky, loves apple and afraid of bugs. After being drop into a place surrounded by his favorite apples, scary lethal endermite and hot lava, his goal is to gather as much apples without being killed by endermite or falling into lava. The goal of the project is to build an algorithm that will help Mr. Panicky to survive in a random generated map as long as possible while collecting apples.
+
+
  
  
 ## Approach:  
@@ -18,9 +20,8 @@ For the combination algorithm, we compute the weight for both angles to get the 
 
 ## Evaluation:
 
-| Method | Map0 score/steps | Map1 score/steps | Map2 score/steps | Map3 score/steps | Map4 score/steps | All avg score/steps|
-| ------ | ---------------- | ---------------- | ---------------- | ---------------- | ---------------- | ------------------ |
-| A* depth =2 |        d    |         Text C1  |         Text C1  |         Text C1  |         Text C1  |         Text C1    |
+<br />
+<img src="evaluation_table.png" height="400" width="700" alt=""> <br />
 
 
 
