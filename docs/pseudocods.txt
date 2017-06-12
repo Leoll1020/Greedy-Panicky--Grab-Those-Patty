@@ -1,0 +1,108 @@
+# Collections of all pseudocodes that needed for approach
+
+def generate_Matrix(proportion):
+	brng = Bernoulli_random_number_generator(probablity = proportion)
+	for each blocks in Map:
+		if the block is the agent’s spawn point or adjacent to it:
+			the block does not contain lava. 
+		else:
+			u = output of brng
+			if u == 1:
+				the block contains lava. 	
+			else:
+				the block does not contain lava. 
+	return Map
+
+
+
+
+def genRandomGoalXML(num_of_apples):
+    while not enough apples:
+    	row_number = randint from all possible row numbers
+    	col_number = randint from all possible column numbers
+        if the block at (row_number, col_number) does not contain lava:
+        	put an apple there
+        else:
+        	continue 
+    return Map
+
+    
+def astar(depth = 'inf'):
+	unvisted = dict() key: state, value: EstimCost
+	DistScores = dict() 
+		# key: state, value: cost from start to state
+	EstimCost = dict() 
+		# key: state, value: estimated cost from start to goal going through this state
+
+	pred = dict() key: state, value: the predecessor of the state 
+	visited = set() of visited states
+	DistScores[start] = 0
+
+
+	while the unvisited is not empty
+		current_state = state with the least EstimCost in unvisited
+		mark the current_state visited
+		
+		for next_state in surrounding_state(current_state):
+			if next_state is farther than depth:
+				skip next_state
+			else:
+				if DistScores[next_state] > DistScores[current_state] + dist:
+				 	calculate and update DistScores, EstimCost and pred
+					if next_state not visited:
+						unvisted[next_state] = EstimCost[next_state]
+			
+	dest = the state with the minimum fScore
+
+	return retreive_path(start, dest)
+
+
+
+def distance(state1, state2):
+	return max(change in row coordinate, change in column coordinate) +
+			 0.5 *(How wide the angle is that the agent need to turn)
+
+def heuristic(state):
+	if the state contains lava: return 'inf'
+	if the state is adjacent to lava : return 10000
+	if there is an apple: return -100.0
+	else:
+		if see any apples:
+			return shortest distance to the closest apple
+					+ (1000 - shortest distance to the closest lava)
+		else:
+			return 1000 - shortest distance to the closest lava
+
+
+
+def best_angle():
+    for option in all possible angles:
+    
+        turncost = the cost of turning
+        score of the option = 
+        	turncost + sum(weight / distance for each entity) 
+        	+ sum(weight / distance to the wall for each walls)
+    
+    return the option with the maximum score
+
+
+
+
+
+
+def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position, mob_damage, lava_damage):
+	#suppose here agent_position is (x,z) tuple of agent position
+	# return a_start_policy
+	
+	calculate the distance factor _w
+	Lava distance: w,Mob distance:m
+	#Greater a value means prefer a_star more (lava aviodance)
+
+	calculate lava aviodance factor a = (lava_damage)/(lava_damage+mob_damage)
+
+	A_star policy weight: a*_w, best_angle algorithm weight: (1-a)*(1-_w)
+	Final angle: (a*_w*a_start_policy + (1-a)*(1-_w)*best_angle_policy)/(a*_w+(1-a)*(1-_w))
+	
+
+
+	

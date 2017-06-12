@@ -31,7 +31,7 @@ use_random_map = True # True to use random map, false to use mapfiles
 mapfiles = ['map0.txt', 'map1.txt', 'map2.txt',
             'map3.txt', 'map4.txt']
 
-num_reps = 20
+num_reps = 100 # has to greater than num_of_map * 10
 if use_random_map:
     num_of_map = 5
 else:
@@ -137,9 +137,11 @@ for iRepeat in range(num_reps):
     # a will be updated every run under same map
     already_killed_by_lava=False
     if iRepeat%(num_reps/num_of_map)==0:  #when start a new map
-        a=0.5
-        mob_damage=0
-        lava_damage=0
+        Constants.summary[iRepeat/(num_reps/num_of_map)] = []
+        Constants.alpha=0
+        Constants.candidates = [0, 0.25, 0.5, 0.75, 0.90]
+        Constants.step = 0.1
+        
         
         if use_random_map:
             
@@ -188,7 +190,8 @@ for iRepeat in range(num_reps):
     previous_start=(0,0)
     previous_policy=0
     a_star_policy=0
-
+    mob_damage=0
+    lava_damage=0
     while Constants.world_state.is_mission_running:
         Constants.world_state = Constants.agent_host.getWorldState()
         if Constants.world_state.number_of_observations_since_last_state > 0:
@@ -228,7 +231,7 @@ for iRepeat in range(num_reps):
                 a_star_policy=AStarPolicy.a_star((me.x,me.z), current_yaw, Constants.MATRIX, 
                                     previous_start, Constants.AStar_Policy, depth=6)
                 standard_policy=StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
-                best_yaw=helper.choosePolicy(a_star_policy, standard_policy,Constants.MATRIX,entities,(me.x, me.z), mob_damage,lava_damage)
+                best_yaw=helper.choosePolicy(a_star_policy, standard_policy,Constants.MATRIX,entities,(me.x, me.z), Constants.alpha)
                 
                 print 'best:', best_yaw
                 #best_yaw = StandardPolicy.returnStandardPolicy(entities, current_yaw, current_life)
@@ -261,17 +264,21 @@ for iRepeat in range(num_reps):
     print '=================================='
     print "We stayed alive for " + str(total_commands) + " commands, and scored " + str(total_reward)
     print '=================================='
-    Constants.summary.append((total_reward, total_commands))
+    Constants.summary[iRepeat/(num_reps/num_of_map)].append((total_reward, total_commands, Constants.alpha))
+    helper.updateAlpha(mob_damage, lava_damage, 
+        Constants.summary[iRepeat/(num_reps/num_of_map)])
     time.sleep(2) # Give the mod a little time to prepare for the next mission.
 
 sum_reward = 0
 sum_command = 0
-for tReward, tCommands in Constants.summary:
-    sum_reward += tReward
-    sum_command += tCommands
+for val in Constants.summary.values():
+    for tReward, tCommands,tAlpha in val:
+        sum_reward += tReward
+        sum_command += tCommands
 
 print Constants.summary
 
 print '=================================='
 print 'Summary: average reward: {:10.4f}, average command:{:10.4f}'.format(
                 sum_reward / num_reps, sum_command/ num_reps)
+print Constants.summary

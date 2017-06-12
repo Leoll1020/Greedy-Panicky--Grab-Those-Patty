@@ -79,8 +79,9 @@ def findmobs(entities):
 	return result
 
 #Given A* and bestAngle policy (an angle), return the combined output
-def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position, mob_damage, lava_damage):
+def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position, a):
 	#suppose here agent_position is (x,z) tuple of agent position
+	# return a_start_policy
 	print " \nChoosing policy:"
 	print '[Step 1] Raw Astar angle: ', a_start_policy, ' Raw Standard angle: ', best_angle_policy
 	walls = findLava(map)  
@@ -99,18 +100,86 @@ def choosePolicy(a_start_policy, best_angle_policy,map,entities, agent_position,
 	print "[Step 2] Lava distance: ",w," Mob distance: ",m
 	#Greater a value means prefer a_star more (lava aviodance)
 
-	if (lava_damage+mob_damage==0):
-		a=0.5
-	else:
-		a=float(lava_damage)/float(lava_damage+mob_damage)
+	# if (lava_damage+mob_damage==0):
+	# 	a=0.5
+	# else:
+	# 	a=float(lava_damage)/float(lava_damage+mob_damage)
 	print "[Step 3] a value (lava aviodance factor): ",a
 
 	print "[Step 4] Lava (a_star) policy weight: ",float(a)*float(_w)," Mob (standard) policy weight: ",float(1-a)*float(1-_w)
-	print "[Conclusion] Final policy (angle): ",(float(a)*float(_w)*a_start_policy+float(1-a)*float(1-_w)*best_angle_policy)/(float(a)*float(_w)+float(1-a)*float(1-_w)),"\n"
+	# print "[Conclusion] Final policy (angle): ",(float(a)*float(_w)*a_start_policy+float(1-a)*float(1-_w)*best_angle_policy)/(float(a)*float(_w)+float(1-a)*float(1-_w)),"\n"
+	try:
+		1/(float(a)*float(_w)+float(1-a)*float(1-_w))
+	except:
+		print a*_w, 1-a*1-_w
 	return (float(a)*float(_w)*a_start_policy+float(1-a)*float(1-_w)*best_angle_policy)/(float(a)*float(_w)+float(1-a)*float(1-_w))
 	#return 0
 	# return best_angle_policy
 	#return a_start_policy
+def updateAlpha(mob_damage, lava_damage, reward_history):
+	# mob_damage, lava_damage
+	print 'update Alpha'
+	if len(Constants.candidates) != 0:
+
+		Constants.candidates.pop(0)
+		try:
+
+			Constants.alpha = Constants.candidates[0]
+			print 'Using preset candidate:', Constants.alpha
+			# if there is still a candidate to test
+		except:
+			# tested all the candidates 
+			# find the candidates with best score 
+			reward_history.sort(key=lambda x: x[1])
+			
+			Constants.alpha = reward_history[-1][2]
+			print 'Using preset candidate with best performance:', Constants.alpha
+	else:
+		# compare the result of last round and the 
+		# second last round 
+		print reward_history
+
+		last = reward_history[-1]
+		sec_last = reward_history[-2]
+		print 'Using reward history of last two round', last, sec_last
+
+		# differencial = abs(last[1] - sec_last[1])*2/ (sec_last[1] + last[1])
+		print '[Step 1]', 
+		# print 'Differencail:', differencial,
+		print 'Step: ', Constants.step
+		
+		# if last[1] > sec_last[1]: 
+		# 	# if performance improved:
+		# 	Constants.alpha += Constants.step 
+		# 	Constants.step = Constants.step * 0.9
+		# 	# * differencial
+		# elif last[1] < sec_last[1]:
+		# 	# if performance retrograded:
+		# 	Constants.step = -1 * Constants.step
+		# 	Constants.alpha += Constants.step 
+		
+
+
+
+		if last[1] < sec_last[1]:
+			# if performance retrograded:
+			if lava_damage > mob_damage:
+				Constants.alpha += Constants.step
+			else: 
+				Constants.alpha -= Constants.step
+			# * differencial
+		if Constants.alpha <= 0:
+			Constants.alpha = 0.01
+		if Constants.alpha >= 1:
+			Constants.alpha = 0.99
+		# else: # if doesn't change
+		Constants.step = Constants.step * 0.9
+		
+		print '[Step 2] New alpha:', Constants.alpha,
+		print '[Step 3] New step: ', Constants.step
+
+	# print 'Alpha', Constants.alpha
+	
 
 #transfer double position to integer
 def _currentState(x,z, WIDTH, BREADTH):
