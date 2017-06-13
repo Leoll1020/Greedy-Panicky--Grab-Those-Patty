@@ -144,10 +144,13 @@ Alpha stabilizes after 20 runs. Such a trend reflects our implementation: in the
 ## References: 
 
 Amit’s A* Pages http://theory.stanford.edu/~amitp/GameProgramming/ 
+
 Priority dictionary: modified, used in A* algorithm:
 	http://www.ics.uci.edu/~eppstein/161/python/priodict.py 
+
 Mob fun: fundation of this project:
 	Malmo\Python_Examples\mob_fun.py
+
 Voice for the video:
 	http://ttsreader.com
 
