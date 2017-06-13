@@ -6,9 +6,10 @@ title: Final Report
 ## Video Report
 <br />
 <div id="video_frame">
-  <iframe src="https://www.youtube.com/watch?v=aGmrlq8siWY" frameborder="0" allowfullscreen></iframe>
+  <iframe src="https://youtu.be/aGmrlq8siWY" frameborder="0" allowfullscreen></iframe>
 </div>
 <br />
+https://www.youtube.com/watch?v=aGmrlq8siWY
 
 ## Project Summary
 ### Background Story:
