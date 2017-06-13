@@ -28,6 +28,6 @@ title: Final Report
 2. In different situations, the weight of two policies can be different. The agent need to be trained to make the best decision.
         Solution: in the choose_policy function, we first weight two policies on the distance among the agent, and the closest lava and endermite. Then use hill climbing to find the best parameter alpha  to optimize the solution.
  
- ### Why AI?
+### Why AI?
   Since the task is complex and the agent needs to balance on different things, i.e. getting apples, avoiding lavas, running away from endermites, it is hard to give a simple solution to the project that can do well in any situation. Therefore, we need to use and combine AI/ML algorithms to train the agent and make it perform well in any situations (i.e. random maps).
 
