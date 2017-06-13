@@ -4,7 +4,12 @@ title: Final Report
 ---
 # Greedy-Panicky--Grab-Those-Patty Final Report
 ## Video Report
-https://www.youtube.com/watch?v=aGmrlq8siWY
+<br />
+<div id="video_frame">
+  <iframe src="https://www.youtube.com/watch?v=aGmrlq8siWY" frameborder="0" allowfullscreen></iframe>
+</div>
+<br />
+
 ## Project Summary
 ### Background Story:
   Mr. Panicky, our protagonist, is a guy who loves apples and is afraid of bugs. Unfortunately, he has an evil boss who loves to trick Mr. Panicky. One day, the evil boss left pool Panicky in a place surrounded by his favorite apples, scary lethal endermite and hot lava. To survive, Panicky could not be caught by endermites nor step into lavas. Surviving longer is the main goal and getting apples can be a bonus.
