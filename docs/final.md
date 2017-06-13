@@ -50,13 +50,19 @@ title: Final Report
 <img src="P1.png"> <br />
 
   The position of apple is decided by the built-in random integer generator in Python. The algorithm will avoid putting an apple at a lava block. Here is the pseudo code:
-  P2
+  
+    <br />
+<img src="P2.png"> <br />
+
   Constant part:
 	The position of endermite spawner and the location of the agent’s spawn point are fixed. 
 	The agent’s spawn point is at the center of the map (x=0.5, y=207 z=0.5) and the spawners of endermite will be located at the outermost rows and columns of the map and the center 3x3 grid of the map. Since the agent can walk on the spawner with no damage, the spawner can be considered the same as stone.
  
 Here is an example of map:
-  P3
+  
+    <br />
+<img src="P3.png"> <br />
+
   The dark purple dots are the endermites, red ovals are apples, the blocks with orange and yellow color contains lava and the blocks with grids are the spawners.
  
 ### Section 2: Baseline
@@ -70,7 +76,9 @@ Currently, we divide the algorithm into three parts: a best-angle algorithm, A* 
 #### Best-angle Algorithm
 The best-angle algorithm is used to avoids endermites. It evaluates all the possible by the distance to the endermite and apple and the difference between the new angle and the direction that the Mr. Panicky is currently facing. The angle with the best score (facing towards the apple, away from endermites, and requiring less change) will be chosen to be the final result. In terms of the method to calculate score, each entity is given a value by: (reward)/(distance^4) so that we pay more attention to nearby apples or nearby endermite.
 Pseudo code:
-  P4
+  
+    <br />
+<img src="P4.png"> <br />
   
 #### A-star algorithm 
 The A-star algorithm is used for finding the path from the current block to the closest apple. Given the location of lava blocks and apples, it returns a shortest path from current block coordinate to a apple. However, we also implement a feature to limit the depth of A star algorithm; that is, the algorithm will stop looking for the next state if it is too far away from the start. 
@@ -88,31 +96,40 @@ Following paragraphs are the details of the algorithm.
 A star algorithm will look for the unvisited state with the minimum estimated cost from start to the goal going through this state. Then, it will explore its surrounding and update their estimated cost. The algorithm will repeat this process until it found the path to the goal or there is no more unvisited state.
  
 Here is the pseudo code:
-  P5
+  
+    <br />
+<img src="P5.png"> <br />
  
 ##### Heuristic function
 The heuristic function estimates the cost from a state to destination. It is determined by the distance from the state to an apple and its distance to lava. Here is the pseudo code:
-  P6
+  
+    <br />
+<img src="P6.png"> <br />
   
 ##### Distance function
 The distance from start to a states is determined by their modified Manhattan distance and the turn that agent need to make. Here is the pseudo code:
-  P7
+  
+    <br />
+<img src="P7.png"> <br />
   
 #### Choose_policy function
  
 ##### Distance function (weight policies based on distance)
 To make it easier to be calculated, we first put all items into a 16x16 map by transforming their detailed positions (positions of x-axis and z-axis) to indexes of 2d-list. For example, as it shown in the screenshot, any item in a certain grid has the index of that grids. Some endermites in the same grid share the same index. 
 
-  P8
+    <br />
+<img src="P8.png"> <br />
 
 However, we find the agent did not perform as good as we expected, so we decided to use the (x,z), i.e. the detailed coordinate, to make the weight more precise.
 After collecting the positions of the agent, all the endermites and lavas, the function will calculate the distance between each pair of agent and endermite, and each pair of agent and apples, find the minimums, i.e. the distance between the agent and the closest lava/endermite. For the minimum distance between agent and lava, w, and the minimum distance between the agent and endermite, m, the function weight on the A* policy by _w=m/(m+w). The pseudocode is shown as below,
 
-  P9
+    <br />
+<img src="P9.png"> <br />
   
 To make it easier to understand, here is an example. In the case shown above, blue dots are apples, red dots are endermites, the green dot is the agent and orange blocks are the lavas. With estimation, we have w equals to 2.5 and m equals to 1.1, so we will get _w=1.1/(1.1+2.5)=11/36. 
   
-  P10
+    <br />
+<img src="P10.png"> <br />
 
 ##### Hill-climbing algorithm (old_version)
 bing algorithm is used for finding the balance between the best-angle algorithm and the A-star algorithm. The agent is keep learning from the current map of how danger its lava and endermite is so that he can assign proper attention to both of them. For example, if a map contains more lava than usual, the agent will learn from previous lava damage and be more careful with lava than endermite next time in the same map. Hill-climThe logic of implementing this is keeping track of lava-damage and endermite-damage. The initial weight is 0.5, which means we are not biased against any of the strategies. But with the game proceeds, the weight will be calculated by (total_lava_damage/total_mob_damage)*normalization_factor.
@@ -121,17 +138,20 @@ bing algorithm is used for finding the balance between the best-angle algorithm 
 The previous hill-climbing algorithm suffers from performance issue due to complexity of the map, and we react by developing this updated hill-climbing algorithm. The new version is still based on lava damage and mod damage, but the under-the-hood implementation is completely different. In this updated version, we first try some random alpha value and record the command and reward. After we have gathered enough reward information from some broad tries, we then focus on pursuing local maximum by maintaining the same alpha if our step is currently improving. Or, if the previous step is worsening the scenario, we will increase or reduce alpha by a step unit, depending on which one of lava and mob causes more damage. 
 The pseudocode is shown as below,
 
-  P11
+    <br />
+<img src="P11.png"> <br />
 
 ## Evaluation
 ### Conclusion 1: Combined strategy outperforms baseline strategy 
 The “combined strategy performance” stands for the combined performance of a-star policy and best-angle policy combined with choose-policy function in which a hill-climbing algorithm is properly integrated. We will compare this combined strategy performance with baseline performance. Baseline performance, as mentioned before, is the performance that only uses  best-angle policy. The following graph is the their comparison in terms of total score:
 
-  P12
+    <br />
+<img src="P12.png"> <br />
   
 In this graph, x-axis is number of iterations we run on a randomly generated map, y-axis is the score (number of apples) we got during that iteration. The baseline strategy shows an average of 280 while combined strategy shows an average of 435. The following graph is another comparison of combined strategy between baseline strategy in terms of surviving rounds from the same 20 runs. 
 
-  P13
+    <br />
+<img src="P13.png"> <br />
   
 In this graph, x-axis is number of iterations we run on a randomly generated map, y-axis is the surviving time unit (steps) we got during that iteration. The baseline strategy shows an average of 26 while combined strategy shows an average of 34.3. Such an improvement shows when a-star is combined with best-angle policy properly, it can significantly outperform best-angle strategy alone, both on reward side (apples collected) and on surviving time side.
  
@@ -140,7 +160,8 @@ Hill-climbing is the main focus of our post-midterm effort and the previous two 
  
 As a supplement material to prove alpha is doing its “mountain climbing” job correctly, the following is alpha’s value from the same 20 runs.
 
-  P14
+    <br />
+<img src="P14.png"> <br />
   
 Alpha stabilizes after 20 runs. Such a trend reflects our implementation: in the first several (5) rounds, we randomly initialize alpha to have a broad view. After 5 rounds, alpha finds its “uphill” and converges to its local maxima by keep adding a step size or remained unchanged depending on situation is worsening or improving. 
 
