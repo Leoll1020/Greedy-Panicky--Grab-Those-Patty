@@ -6,13 +6,6 @@ title:  Home
 # Greedy-Panicky--Grab-Those-Patty
 An AI project for Minecraft[1.8] game. The agent is trained to collect apples, escaping from pursuing enemies, and avoiding lava blocks all at the same time. Based on A-Star algorithm and Malmo framework.
 
-Status Report:
-<br />
-<div id="video_frame">
-  <iframe src="https://www.youtube.com/embed/h-qSJNtnlz0" frameborder="0" allowfullscreen></iframe>
-</div>
-<br />
-
 Final Report:
 <br />
 <div id="video_frame">
