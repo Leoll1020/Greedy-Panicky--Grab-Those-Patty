@@ -45,7 +45,10 @@ title: Final Report
 #### Randomized part: 
   The position of lava and apples are randomly generated using the built-in random number generator in Python. 
   For each block in the map, the output of a Bernoulli-distributed random number generator will determine whether the block contains lava or not. However, to make sure the test is usable and meaningful, the agent’s spawn point and those 8 blocks that surrounding it will never be lava. With that exception, the probability of a block being lava (i.e. the probability of Bernoulli-distributed random number generator returns 1) is set to be equal to the proportion of lava in the map. Here is the pseudo code: 
-  P1
+  
+  <br />
+<img src="P1.png"> <br />
+
   The position of apple is decided by the built-in random integer generator in Python. The algorithm will avoid putting an apple at a lava block. Here is the pseudo code:
   P2
   Constant part:
