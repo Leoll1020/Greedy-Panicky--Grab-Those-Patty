@@ -51,7 +51,7 @@ title: Final Report
 
   The position of apple is decided by the built-in random integer generator in Python. The algorithm will avoid putting an apple at a lava block. Here is the pseudo code:
   
-    <br />
+  <br />
 <img src="P2.png"> <br />
 
   Constant part:
@@ -117,7 +117,7 @@ The distance from start to a states is determined by their modified Manhattan di
 ##### Distance function (weight policies based on distance)
 To make it easier to be calculated, we first put all items into a 16x16 map by transforming their detailed positions (positions of x-axis and z-axis) to indexes of 2d-list. For example, as it shown in the screenshot, any item in a certain grid has the index of that grids. Some endermites in the same grid share the same index. 
 
-    <br />
+   <br />
 <img src="P8.png"> <br />
 
 However, we find the agent did not perform as good as we expected, so we decided to use the (x,z), i.e. the detailed coordinate, to make the weight more precise.
